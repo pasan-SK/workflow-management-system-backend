@@ -32,7 +32,7 @@ const userSchema = new Schema({
     },
     userStatus: {
         type: Number,
-        // required: true
+        default: 1  //1-active user, 0-deleted user
     },
     refreshToken: String
 })

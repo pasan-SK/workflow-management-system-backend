@@ -13,11 +13,12 @@ const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
 const PORT = process.env.PORT || 3500;
 
+//Routes
 const registerRoutes = require('./routes/authRoutes/register')
 const loginRoutes = require('./routes/authRoutes/login')
 const refreshRoutes = require('./routes/authRoutes/refresh')
 const logoutRoute = require('./routes/authRoutes/logout')
-const blogsRoute = require('./routes/api/blogsRoutes')
+const categoryRoutes = require('./routes/api/categoryRoutes')
 
 // Connect to MongoDB
 connectDB();
@@ -49,7 +50,7 @@ app.use('/logout', logoutRoute);
 
 // access token check for below routes
 app.use(verifyJWT);
-app.use('/blogs', blogsRoute);
+app.use('/categories', categoryRoutes)
 
 // 404
 app.all('*', (req, res) => {
