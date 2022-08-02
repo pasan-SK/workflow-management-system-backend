@@ -19,6 +19,7 @@ const loginRoutes = require('./routes/authRoutes/login')
 const refreshRoutes = require('./routes/authRoutes/refresh')
 const logoutRoute = require('./routes/authRoutes/logout')
 const categoryRoutes = require('./routes/api/categoryRoutes')
+const userRoutes = require('./routes/api/userRoutes')
 
 // Connect to MongoDB
 connectDB();
@@ -51,6 +52,7 @@ app.use('/logout', logoutRoute);
 // access token check for below routes
 app.use(verifyJWT);
 app.use('/categories', categoryRoutes)
+app.use('/users', userRoutes)
 
 // 404
 app.all('*', (req, res) => {

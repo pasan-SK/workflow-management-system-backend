@@ -19,14 +19,36 @@ const userSchema = new Schema({
         required: true
     },
     roles: {
-        User: {
-            type: Number,
-            default: 2001
-        },
-        Editor: {
-            type: Number,
-        },
+        // User: {
+        //     type: Number,
+        //     default: 2001
+        // },
         Admin: {
+            type: Number,
+            // default: 2000
+        },
+        DI: {
+            type: Number,
+        },
+        CE: {
+            type: Number,
+        },
+        DIE: {
+            type: Number,
+        },
+        ME: {
+            type: Number,
+        },
+        IE: {
+            type: Number,
+        },
+        EA: {
+            type: Number,
+        },
+        DmanDIE: {
+            type: Number,
+        },
+        DmanDI: {
             type: Number,
         }
     },
