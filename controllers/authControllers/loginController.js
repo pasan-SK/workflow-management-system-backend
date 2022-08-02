@@ -1,5 +1,5 @@
 const User = require('../../model/User')
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const handleLogin = async (req, res) => {
@@ -10,7 +10,7 @@ const handleLogin = async (req, res) => {
     if (!foundUser) return res.sendStatus(401); //Unauthorized 
 
     // evaluate password 
-    const match = await bcrypt.compare(pwd, foundUser.password);
+    const match = bcryptjs.compareSync(pwd, foundUser.password);
     if (match) {
         const roles = Object.values(foundUser.roles).filter(Boolean);
 
@@ -23,7 +23,7 @@ const handleLogin = async (req, res) => {
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '300s' }
+            { expiresIn: '3000s' }
         );
         const refreshToken = jwt.sign(
             { "email": foundUser.email },

@@ -26,12 +26,12 @@ const updateCategory = async (req, res) => {
         return res.status(400).json({ 'message': 'Category id is required.' }); //bad request
     }
     const id = req.body.id
-    const blog = await Category.findById(id).exec()
-    if (!blog) {
+    const category = await Category.findById(id).exec()
+    if (!category) {
         return res.status(400).json({ "message": `Category with id = ${id} is not found` }); //bad request
     }
-    if (req.body.name) blog.name = req.body.name;
-    const result = await blog.save()
+    if (req.body.name) category.name = req.body.name;
+    const result = await category.save()
     res.status(200).json(result); //updated successfully
 }
 
@@ -41,9 +41,9 @@ const deleteCategory = async (req, res) => {
         return res.status(400).json({ 'message': 'Category id is required.' }); //bad request
     }
     const id = req.body.id
-    const blog = await Category.findById(id)
+    const category = await Category.findById(id)
 
-    if (!blog) {
+    if (!category) {
         return res.status(400).json({ "message": `Category with ID ${req.body.id} not found` }); //bad request
     }
 
@@ -54,12 +54,12 @@ const deleteCategory = async (req, res) => {
 const getCategory = async (req, res) => {
     //request body should contain the id of the category that should be fetched
     const id = req.body.id
-    const blog = await Category.findById(id)
+    const category = await Category.findById(id)
 
-    if (!blog) {
+    if (!category) {
         return res.status(400).json({ "message": `Category ID with ${req.body.id} not found` });  //bad request
     }
-    res.status(200).json(blog);
+    res.status(200).json(category);
 }
 
 module.exports = {
