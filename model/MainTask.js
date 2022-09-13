@@ -17,7 +17,7 @@ const mainTaskSchema = new Schema({
     },
     updatedAt: {
         type: Date,
-        default: Date.now /*************************************!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+        default: Date.now
     },
     subtasks_ids: [{
         // type: mongoose.Schema.Types.ObjectId,
