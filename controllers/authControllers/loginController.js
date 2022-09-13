@@ -35,7 +35,8 @@ const handleLogin = async (req, res) => {
 
         // Saving refreshToken with current user
         foundUser.refreshToken = refreshToken;
-        const result = await foundUser.save();        
+        const result = await foundUser.save();    
+
         //********************SECURE*********************** */
         /** make secure: false if using thunderclient
          *  make secure: true when connecting backend with the UIs (in web app)
