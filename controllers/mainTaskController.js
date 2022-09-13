@@ -63,7 +63,7 @@ const deleteMainTask = async (req, res) => {
     res.status(200).json(result);
 }
 
-const getUser = async (req, res) => {
+const getMainTask = async (req, res) => {
     //request body should contain the id of the mainTask that should be fetched
     const id = req.body.id
     const mainTask = await MainTask.findById(id)
@@ -79,5 +79,5 @@ module.exports = {
     createNewMainTask,
     updateMainTask,
     deleteMainTask,
-    getUser
+    getMainTask
 }

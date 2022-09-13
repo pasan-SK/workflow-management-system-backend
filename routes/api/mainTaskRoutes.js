@@ -11,6 +11,6 @@ router.route('/')
     .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), mainTaskController.deleteMainTask);
 
 router.route('/:id')
-    .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), mainTaskController.getUser);
+    .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), mainTaskController.getMainTask);
 
 module.exports = router;

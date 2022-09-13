@@ -5,7 +5,7 @@ const getAllCategories = async (req, res) => {
     if(!result) res.status(204).json({"message": "No categories found"}) //no content
     if(result.length === 0) res.status(204).json({"message": "No categories found"}) //no content
 
-    res.status(200).json(result);
+    else res.status(200).json(result);
 }
 
 const createNewCategory = async (req, res) => {

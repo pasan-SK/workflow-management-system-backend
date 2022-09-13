@@ -1,21 +1,21 @@
 const mongoose = require('mongoose'); 
 const Schema = mongoose.Schema;
 
-const mainTaskSchema = new Schema({
-    category_id: {
+const subtaskSchema = new Schema({
+    maintask_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Category",
+        ref: "MainTask",
         required: true
     },
-    description: {
+    name: {
         type: String,
         required: true
     },
-    subtasks_ids: [{
+    assigned_employee_IDs: [{
         // type: mongoose.Schema.Types.ObjectId,
-        // ref: 'Subtask'
+        // ref: 'User'
         type: String
     }]
 })
 
-module.exports = mongoose.model("MainTask", mainTaskSchema);
+module.exports = mongoose.model("Subtask", subtaskSchema);

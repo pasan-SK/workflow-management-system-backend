@@ -21,6 +21,7 @@ const logoutRoute = require('./routes/authRoutes/logout')
 const categoryRoutes = require('./routes/api/categoryRoutes')
 const userRoutes = require('./routes/api/userRoutes')
 const mainTaskRoutes = require('./routes/api/mainTaskRoutes')
+const subtaskRoutes = require('./routes/api/subtaskRoutes')
 
 // Connect to MongoDB
 connectDB();
@@ -56,6 +57,7 @@ app.use(verifyJWT);
 app.use('/categories', categoryRoutes)
 app.use('/users', userRoutes)
 app.use('/mainTasks', mainTaskRoutes)
+app.use('/subtasks', subtaskRoutes)
 
 // 404
 app.all('*', (req, res) => {
