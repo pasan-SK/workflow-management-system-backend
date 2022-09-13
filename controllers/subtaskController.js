@@ -23,7 +23,9 @@ const createNewSubtask = async (req, res) => {
     const result = await Subtasks.create({
         "maintask_id": maintask_id,
         "name": name,
-        "assigned_employee_IDs": assigned_employee_IDs
+        "assigned_employee_IDs": assigned_employee_IDs,
+        "createdAt": new Date(),
+        "updatedAt": new Date()
     })
 
     res.status(201).json(result); //created
@@ -43,7 +45,8 @@ const updateSubtask = async (req, res) => {
     if (req.body.maintask_id) subTask.maintask_id = req.body.maintask_id;
     if (req.body.name) subTask.name = req.body.name;
     if (req.body.assigned_employee_IDs) subTask.assigned_employee_IDs = req.body.assigned_employee_IDs;
-
+    subTask.updatedAt = new Date();
+    
     const result = await subTask.save()
     res.status(200).json(result); //updated successfully
 }

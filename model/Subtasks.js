@@ -11,6 +11,14 @@ const subtaskSchema = new Schema({
         type: String,
         required: true
     },
+    createdAt: {
+        type: Date,
+        default: Date.now 
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    },
     assigned_employee_IDs: [{
         // type: mongoose.Schema.Types.ObjectId,
         // ref: 'User'

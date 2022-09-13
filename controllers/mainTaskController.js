@@ -23,7 +23,9 @@ const createNewMainTask = async (req, res) => {
     const result = await MainTask.create({
         "category_id": category_id,
         "description": description,
-        "subtasks_ids": subtasks_ids
+        "subtasks_ids": subtasks_ids,
+        "createdAt": new Date(),
+        "updatedAt": new Date()
     })
 
     res.status(201).json(result); //created
@@ -43,7 +45,8 @@ const updateMainTask = async (req, res) => {
     if (req.body.category_id) mainTask.category_id = req.body.category_id;
     if (req.body.description) mainTask.description = req.body.description;
     if (req.body.subtasks_ids) mainTask.subtasks_ids = req.body.subtasks_ids;
-
+    mainTask.updatedAt = new Date();
+    
     const result = await mainTask.save()
     res.status(200).json(result); //updated successfully
 }
