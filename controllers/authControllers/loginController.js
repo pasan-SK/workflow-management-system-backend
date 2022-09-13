@@ -37,7 +37,10 @@ const handleLogin = async (req, res) => {
         foundUser.refreshToken = refreshToken;
         const result = await foundUser.save();        
         //********************SECURE*********************** */
-        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: false, maxAge: 24 * 60 * 60 * 1000 });
+        /** make secure: false if using thunderclient
+         *  make secure: true when connecting backend with the UIs (in web app)
+         */
+        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
         res.json({roles, accessToken });
     } else {
         res.sendStatus(401); //unauthorized (wrong password)

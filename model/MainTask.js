@@ -11,6 +11,14 @@ const mainTaskSchema = new Schema({
         type: String,
         required: true
     },
+    createdAt: {
+        type: Date,
+        default: Date.now 
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now /*************************************!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+    },
     subtasks_ids: [{
         // type: mongoose.Schema.Types.ObjectId,
         // ref: 'Subtask'
