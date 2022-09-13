@@ -9,6 +9,8 @@ const handleLogin = async (req, res) => {
     const foundUser = await User.findOne({ email }).exec();
     if (!foundUser) return res.sendStatus(401); //Unauthorized 
 
+    console.log("AAAAAAAA", bcryptjs.hashSync("c@c.com", 10), bcryptjs.compareSync(pwd, foundUser.password))
+
     // evaluate password 
     const match = bcryptjs.compareSync(pwd, foundUser.password);
     if (match) {
@@ -34,7 +36,8 @@ const handleLogin = async (req, res) => {
         // Saving refreshToken with current user
         foundUser.refreshToken = refreshToken;
         const result = await foundUser.save();        
-        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+        //********************SECURE*********************** */
+        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: false, maxAge: 24 * 60 * 60 * 1000 });
         res.json({roles, accessToken });
     } else {
         res.sendStatus(401); //unauthorized (wrong password)
