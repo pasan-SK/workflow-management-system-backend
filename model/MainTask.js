@@ -19,11 +19,16 @@ const mainTaskSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    subtasks_ids: [{
-        // type: mongoose.Schema.Types.ObjectId,
-        // ref: 'Subtask'
-        type: String
-    }]
+    budget: {
+        type: String,
+        // required: true
+        default: "0"
+    },
+    // subtasks_ids: [{
+    //     // type: mongoose.Schema.Types.ObjectId,
+    //     // ref: 'Subtask'
+    //     type: String
+    // }]
 })
 
 module.exports = mongoose.model("MainTask", mainTaskSchema);

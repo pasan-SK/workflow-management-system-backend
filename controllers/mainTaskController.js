@@ -2,7 +2,7 @@ const MainTask = require("../model/MainTask")
 const bcryptjs = require('bcryptjs');
 
 const getAllMainTasks = async (req, res) => {
-    const result = await MainTask.find({})
+    const result = await MainTask.find({}).sort({_id: -1})
     if (!result) res.status(204).json({ "message": "No mainTasks found" }) //no content
     if (result.length === 0) res.status(204).json({ "message": "No mainTasks found" }) //no content
 
@@ -12,21 +12,35 @@ const getAllMainTasks = async (req, res) => {
 const createNewMainTask = async (req, res) => {
     //request body should contain the category_id, description, subtasks_ids of the new maintask
 
-    if (!req?.body?.category_id || !req?.body?.description || !req?.body?.subtasks_ids) {
+    if (!req?.body?.category_id || !req?.body?.description) {
+        console.log("RRRRRRRRRRRRR ", req.body)
         return res.status(400).json({ 'message': 'category_id, description and subtasks_ids of the new mainTask are required.' }); //bad request
     }
 
     const category_id = req.body.category_id
     const description = req.body.description
-    const subtasks_ids = req.body.subtasks_ids
+    // const subtasks_ids = req.body.subtasks_ids
 
-    const result = await MainTask.create({
-        "category_id": category_id,
-        "description": description,
-        "subtasks_ids": subtasks_ids,
-        "createdAt": new Date(),
-        "updatedAt": new Date()
-    })
+    let result;
+
+    if (req?.body?.budget) {
+        result = await MainTask.create({
+            "category_id": category_id,
+            "description": description,
+            // "subtasks_ids": subtasks_ids,
+            "createdAt": new Date(),
+            "updatedAt": new Date(),
+            "budget": req.body.budget
+        })
+    } else {
+        result = await MainTask.create({
+            "category_id": category_id,
+            "description": description,
+            // "subtasks_ids": subtasks_ids,
+            "createdAt": new Date(),
+            "updatedAt": new Date()
+        })
+    }
 
     res.status(201).json(result); //created
 }
@@ -44,9 +58,10 @@ const updateMainTask = async (req, res) => {
 
     if (req.body.category_id) mainTask.category_id = req.body.category_id;
     if (req.body.description) mainTask.description = req.body.description;
-    if (req.body.subtasks_ids) mainTask.subtasks_ids = req.body.subtasks_ids;
+    // if (req.body.subtasks_ids) mainTask.subtasks_ids = req.body.subtasks_ids;
+    if (req.body.budget) mainTask.budget = req.body.budget;
     mainTask.updatedAt = new Date();
-    
+
     const result = await mainTask.save()
     res.status(200).json(result); //updated successfully
 }
