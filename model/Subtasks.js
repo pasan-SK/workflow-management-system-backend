@@ -11,6 +11,11 @@ const subtaskSchema = new Schema({
         type: String,
         required: true
     },
+    note: {
+        type: String,
+        required: true,
+        default: ""
+    },
     createdAt: {
         type: Date,
         default: Date.now 
@@ -19,11 +24,20 @@ const subtaskSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    assigned_employee_IDs: [{
+    deadline: {
+        type: Date
+    },
+    // assigned_employee_IDs: [{
+    //     // type: mongoose.Schema.Types.ObjectId,
+    //     // ref: 'User'
+    //     type: String
+    // }]
+    assigned_employees: {
         // type: mongoose.Schema.Types.ObjectId,
         // ref: 'User'
-        type: String
-    }]
+        type: Map,
+        of: Boolean
+    }
 })
 
 module.exports = mongoose.model("Subtask", subtaskSchema);

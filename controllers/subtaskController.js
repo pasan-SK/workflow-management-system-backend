@@ -10,23 +10,39 @@ const getAllSubtasks = async (req, res) => {
 }
 
 const createNewSubtask = async (req, res) => {
-    //request body should contain the maintask_id, name, assigned_employee_IDs of the new maintask
+    //request body should contain the maintask_id, name, assigned_employees of the new maintask
 
-    if (!req?.body?.maintask_id || !req?.body?.name || !req?.body?.assigned_employee_IDs) {
-        return res.status(400).json({ 'message': 'maintask_id, name and assigned_employee_IDs of the new subTask are required.' }); //bad request
+    if (!req?.body?.maintask_id || !req?.body?.name || !req?.body?.assigned_employees || !req?.body?.note) {
+        return res.status(400).json({ 'message': 'maintask_id, name, note and assigned_employees of the new subTask are required.' }); //bad request
     }
 
     const maintask_id = req.body.maintask_id
     const name = req.body.name
-    const assigned_employee_IDs = req.body.assigned_employee_IDs
+    const assigned_employees = req.body.assigned_employees
+    const note = req.body.note
 
-    const result = await Subtasks.create({
-        "maintask_id": maintask_id,
-        "name": name,
-        "assigned_employee_IDs": assigned_employee_IDs,
-        "createdAt": new Date(),
-        "updatedAt": new Date()
-    })
+    let result;
+
+    if (req?.body?.deadline) {
+        result = await Subtasks.create({
+            "maintask_id": maintask_id,
+            "name": name,
+            "assigned_employees": assigned_employees,
+            "note": note,
+            "createdAt": new Date(),
+            "updatedAt": new Date(),
+            "deadline": req.body.deadline
+        })
+    } else {
+        result = await Subtasks.create({
+            "maintask_id": maintask_id,
+            "name": name,
+            "note": note,
+            "assigned_employees": assigned_employees,
+            "createdAt": new Date(),
+            "updatedAt": new Date()
+        })
+    }
 
     res.status(201).json(result); //created
 }
@@ -44,9 +60,12 @@ const updateSubtask = async (req, res) => {
 
     if (req.body.maintask_id) subTask.maintask_id = req.body.maintask_id;
     if (req.body.name) subTask.name = req.body.name;
-    if (req.body.assigned_employee_IDs) subTask.assigned_employee_IDs = req.body.assigned_employee_IDs;
+    if (req.body.assigned_employees) subTask.assigned_employees = req.body.assigned_employees;
+    if (req.body.deadline) subTask.deadline = req.body.deadline;
+    if (req.body.note) subTask.note = req.body.note;
+
     subTask.updatedAt = new Date();
-    
+
     const result = await subTask.save()
     res.status(200).json(result); //updated successfully
 }
