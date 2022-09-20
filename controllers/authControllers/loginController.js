@@ -1,5 +1,5 @@
 const User = require('../../model/User')
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const handleLogin = async (req, res) => {
@@ -9,10 +9,12 @@ const handleLogin = async (req, res) => {
     const foundUser = await User.findOne({ email }).exec();
     if (!foundUser) return res.sendStatus(401); //Unauthorized 
 
+    console.log("AAAAAAAA", bcryptjs.hashSync("c@c.com", 10), bcryptjs.compareSync(pwd, foundUser.password))
+
     // evaluate password 
-    const match = await bcrypt.compare(pwd, foundUser.password);
+    const match = bcryptjs.compareSync(pwd, foundUser.password);
     if (match) {
-        const roles = Object.values(foundUser.roles);
+        const roles = Object.values(foundUser.roles).filter(Boolean);
 
         // create JWTs
         const accessToken = jwt.sign(
@@ -23,7 +25,7 @@ const handleLogin = async (req, res) => {
                 }
             },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: '13000s' }
+            { expiresIn: '3000s' }
         );
         const refreshToken = jwt.sign(
             { "email": foundUser.email },
@@ -33,15 +35,16 @@ const handleLogin = async (req, res) => {
 
         // Saving refreshToken with current user
         foundUser.refreshToken = refreshToken;
-        const result = await foundUser.save();
-        console.log(result);
-        
-        //the secure property takes a boolean (true/false) value which specifies whether or not this cookie can only be retrieved over an SSL or HTTPS connection. Here, we set this depending on which environment our application is running in. As long as the environment is not development, we want to force this to be true. In development this isn't necessary because our application is not exposed to the internet, just us, and it's likely that you do not have an SSL proxy server setup locally to handle these requests. MAKE IT TRUE IN PRODUCTION ENVIRONMENT
-        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: false, maxAge: 24 * 60 * 60 * 1000 });
+        const result = await foundUser.save();    
 
-        res.json({ accessToken });
+        //********************SECURE*********************** */
+        /** make secure: false if using thunderclient
+         *  make secure: true when connecting backend with the UIs (in web app)
+         */
+        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+        res.json({roles, accessToken });
     } else {
-        res.sendStatus(401);
+        res.sendStatus(401); //unauthorized (wrong password)
     }
 }
 

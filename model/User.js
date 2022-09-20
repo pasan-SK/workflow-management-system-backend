@@ -5,6 +5,7 @@ const userSchema = new Schema({
     firstname: {
         type: String,
         // required: true
+        unique: true
     },
     lastname: {
         type: String,
@@ -12,27 +13,50 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
         required: true
     },
     roles: {
-        User: {
-            type: Number,
-            default: 2001
-        },
-        Editor: {
-            type: Number,
-        },
+        // User: {
+        //     type: Number,
+        //     default: 2001
+        // },
         Admin: {
+            type: Number,
+            // default: 2000
+        },
+        DI: {
+            type: Number,
+        },
+        CE: {
+            type: Number,
+        },
+        DIE: {
+            type: Number,
+        },
+        ME: {
+            type: Number,
+        },
+        IE: {
+            type: Number,
+        },
+        EA: {
+            type: Number,
+        },
+        DmanDIE: {
+            type: Number,
+        },
+        DmanDI: {
             type: Number,
         }
     },
     userStatus: {
         type: Number,
-        // required: true
+        default: 1  //1-active user, 0-deleted user
     },
     refreshToken: String
 })

@@ -3,11 +3,16 @@ const jwt = require('jsonwebtoken');
 
 const handleRefreshToken = async (req, res) => {
     const cookies = req.cookies;
-    if (!cookies?.jwt) return res.sendStatus(401);
+    console.log("JWT COOKIE:", cookies.jwt)
+    if (!cookies?.jwt) {
+        console.log("IIIIIIIIIIIIII")
+        return res.sendStatus(401)};
     const refreshToken = cookies.jwt;
 
     const foundUser =  await User.findOne({ refreshToken }).exec();
-    if (!foundUser) return res.sendStatus(403); //Forbidden 
+    if (!foundUser) {
+        console.log("UUUUUUUUU")
+        return res.sendStatus(403);} //Forbidden 
 
     // evaluate jwt 
     jwt.verify(
@@ -19,12 +24,12 @@ const handleRefreshToken = async (req, res) => {
             const accessToken = jwt.sign(
                 {
                     "UserInfo": {
-                        "username": decoded.username,
+                        "email": decoded.email,
                         "roles": roles
                     }
                 },
                 process.env.ACCESS_TOKEN_SECRET,
-                { expiresIn: '30s' }
+                { expiresIn: '300s' }
             );
             res.json({ accessToken })
         }
