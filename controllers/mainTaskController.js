@@ -82,12 +82,11 @@ const deleteMainTask = async (req, res) => {
 }
 
 const getMainTask = async (req, res) => {
-    //request body should contain the id of the mainTask that should be fetched
-    const id = req.body.id
+    const id = req.params.id 
     const mainTask = await MainTask.findById(id)
 
     if (!mainTask) {
-        return res.status(400).json({ "message": `MainTask ID with ${req.body.id} not found` });  //bad request
+        return res.status(400).json({ "message": `MainTask with ID=${req.body.id} not found` });  //bad request
     }
     res.status(200).json(mainTask);
 }
@@ -97,5 +96,5 @@ module.exports = {
     createNewMainTask,
     updateMainTask,
     deleteMainTask,
-    getMainTask
+    getMainTask,
 }
