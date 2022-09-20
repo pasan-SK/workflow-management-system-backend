@@ -13,4 +13,7 @@ router.route('/')
 router.route('/:id')
     .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), subtaskController.getSubtask);
 
+router.route('/of-maintask/:id')
+    .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), subtaskController.getAllSubtasksOfMaintask)
+
 module.exports = router;
