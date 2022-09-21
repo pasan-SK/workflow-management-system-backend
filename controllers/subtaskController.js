@@ -1,6 +1,8 @@
 const Subtasks = require("../model/Subtasks")
 const bcryptjs = require('bcryptjs');
 
+let ObjectId = require('mongodb').ObjectId
+
 const getAllSubtasks = async (req, res) => {
     const result = await Subtasks.find({})
     if (!result) res.status(204).json({ "message": "No mainTasks found" }) //no content
@@ -89,11 +91,23 @@ const getSubtask = async (req, res) => {
     //request body should contain the id of the subTask that should be fetched
     const id = req.body.id
     const subTask = await Subtasks.findById(id)
-
+    
     if (!subTask) {
         return res.status(400).json({ "message": `Subtasks ID with ${req.body.id} not found` });  //bad request
     }
     res.status(200).json(subTask);
+}
+
+const getAllSubtasksOfMaintask = async (req, res) => {
+
+    const id = req.params.id 
+    const maintaskID = new ObjectId(id)
+    const allSubtasks = await Subtasks.find({ "maintask_id":  maintaskID })
+
+    if (!allSubtasks) {
+        return res.status(400).json({ "message": `Subtasks with maintasksID=${req.params.id} not found` });  //bad request
+    }
+    res.status(200).json(allSubtasks);
 }
 
 module.exports = {
@@ -101,5 +115,6 @@ module.exports = {
     createNewSubtask,
     updateSubtask,
     deleteSubtask,
-    getSubtask
+    getSubtask,
+    getAllSubtasksOfMaintask
 }
