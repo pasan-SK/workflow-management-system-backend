@@ -3803,3 +3803,7 @@
 20220918	09:47:04	ab5d0d15-3301-45af-bf27-83c08fc7c50d	GET	http://localhost:3000	/mainTasks
 20220918	09:47:04	268de16b-d20f-4987-8183-2917a7cbda7a	POST	http://localhost:3000	/subtasks
 20220918	09:47:04	45eca956-d370-4619-9243-3fae0019f63f	POST	http://localhost:3000	/subtasks
+20220921	10:44:35	830b48e1-6e5c-441f-abc3-5aeef3b0f11e	OPTIONS	http://localhost:3000	/register
+20220921	10:44:35	71b05719-6bda-4a0d-8533-0bf1bdb1ca90	POST	http://localhost:3000	/register
+20220921	10:44:43	792a3fe8-2951-4e9e-9227-914aa20ab3ac	OPTIONS	http://localhost:3000	/login
+20220921	10:44:43	573683e4-953d-48ad-9717-ceb5380afdaf	POST	http://localhost:3000	/login
