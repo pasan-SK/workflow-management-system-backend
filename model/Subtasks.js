@@ -37,6 +37,16 @@ const subtaskSchema = new Schema({
         // ref: 'User'
         type: Map,
         of: Boolean
+    },
+    status: {
+        type: Number,
+        default: 0
+        /**
+         * 0 - Subtask is not yet finished
+         * 1 - partially finished (eg: some employees have finished, but some have not finished yet)
+         * 2 - subtask completed before dealine 
+         * 3 - completed after the deadline
+         */
     }
 })
 
