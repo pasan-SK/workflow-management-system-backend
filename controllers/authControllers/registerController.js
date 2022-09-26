@@ -22,7 +22,7 @@ const handleNewUser = async (req, res) => {
             "email": email,
             "password": hashedPwd
         });
-        console.log(result);
+        // console.log(result);
         
         res.status(201).json({ 'id': result._id });
     } catch (err) {
