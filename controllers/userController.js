@@ -84,8 +84,7 @@ const deleteUser = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-    //request body should contain the id of the category that should be fetched
-    const id = req.body.id
+    const id = req.params.id
     const user = await User.findById(id)
 
     if (!user) {

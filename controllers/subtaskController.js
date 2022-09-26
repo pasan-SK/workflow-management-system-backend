@@ -102,7 +102,7 @@ const getAllSubtasksOfMaintask = async (req, res) => {
 
     const id = req.params.id 
     const maintaskID = new ObjectId(id)
-    const allSubtasks = await Subtasks.find({ "maintask_id":  maintaskID })
+    const allSubtasks = await Subtasks.find({ "maintask_id":  maintaskID }).sort({ "_id": 1 })
 
     if (!allSubtasks) {
         return res.status(400).json({ "message": `Subtasks with maintasksID=${req.params.id} not found` });  //bad request
