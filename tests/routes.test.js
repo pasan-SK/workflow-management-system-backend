@@ -2,6 +2,7 @@ const request = require("supertest")
 // const supertest = require("supertest")
 const app = require("../server")
 const mongoose = require('mongoose');
+const agent = request.agent(app)
 
 const baseURL = "http://localhost:3500"
 
@@ -67,10 +68,11 @@ describe("POST /register", () => {
     })
 })
 
-let accessToken;
+let cookieName = ''
+let cookieValue = ''
 
 describe("POST /login", () => {
-    describe("given a valid email and password", () => {
+    describe("given the valid email and password for the user created in previous test", () => {
         test("should respond with status code 200 and accessToken should be returned as json", async () => {
 
             const loginCredentials = {
@@ -82,16 +84,17 @@ describe("POST /login", () => {
             expect(response.statusCode).toBe(200)
             expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(response.body.accessToken).toBeDefined()
-            accessToken = response.body.accessToken
+            cookieName = response.headers['set-cookie'][0].split(',')[0].split(';')[0].split('=')[0]
+            cookieValue = response.headers['set-cookie'][0].split(',')[0].split(';')[0].split('=')[1]
         });
     })
     describe("when the email and/or password is missing", () => {
-        test("should respond with a status code of 400", async () => {
+        test("should respond with a status code of 400 (bad request)", async () => {
 
             const bodyData = [
-                { pwd }, 
+                { pwd },
                 { email },
-                { }
+                {}
             ]
             for (const body of bodyData) {
                 const response = await request(app).post("/login").send(body)
@@ -99,5 +102,64 @@ describe("POST /login", () => {
             }
         })
     })
-})
+    describe("when an invalid email and/or password is given", () => {
+        test("should respond with a status code of 401 (Unauthorized)", async () => {
 
+            const bodyData = [
+                {
+                    email: "invalid_email@test.com",
+                    pwd
+                },
+                {
+                    email,
+                    pwd: "invalid_password"
+                },
+                {
+                    email: "invalid_email@test.com",
+                    pwd: "invalid_password"
+                }
+            ]
+            for (const body of bodyData) {
+                const response = await request(app).post("/login").send(body)
+                expect(response.statusCode).toBe(401)
+            }
+        })
+    })
+})
+describe("GET /refresh", () => {
+    describe("When made the refresh request with the cookie", () => {
+        test("should respond with status code 200 and accessToken should be returned as json", async () => {
+
+            const response = await agent.get("/refresh").set('Cookie', [
+                `${cookieName}=${cookieValue}`
+            ])
+            expect(response.statusCode).toBe(200)
+            expect(response.body.accessToken).toBeDefined()
+        })
+    });
+    describe("When made the refresh request without the cookie", () => {
+        test("should respond with status code 401 (Unauthorized)", async () => {
+
+            const response = await agent.get("/refresh")
+            expect(response.statusCode).toBe(401)
+        })
+    });
+    describe("When made the refresh request with an invalid cookie value", () => {
+        test("should respond with status code 403 (Forbidden)", async () => {
+
+            const response = await agent.get("/refresh").set('Cookie', [
+                `${cookieName}=some_invalid_cookie_value`
+            ])
+            expect(response.statusCode).toBe(403)
+        })
+    });
+})
+describe("GET /logout", () => {
+    describe("When made the logout request", () => {
+        test("should respond with status code 204 (No content)", async () => {
+
+            const response = await request(app).get("/logout")
+            expect(response.statusCode).toBe(204)
+        })
+    });
+})
