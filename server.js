@@ -25,7 +25,7 @@ const subtaskRoutes = require('./routes/api/subtaskRoutes')
 const notificationRoutes = require('./routes/api/notificationRoutes')
 
 // Connect to MongoDB
-connectDB();
+// connectDB();
 
 // custom middleware logger
 app.use(logger);
@@ -68,7 +68,9 @@ app.all('*', (req, res) => {
 
 app.use(errorHandler);
 
-mongoose.connection.once('open', () => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-});
+module.exports = app
+
+// mongoose.connection.once('open', () => {
+//     console.log('Connected to MongoDB');
+//     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// });

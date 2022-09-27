@@ -5,7 +5,7 @@ const userSchema = new Schema({
     firstname: {
         type: String,
         // required: true
-        unique: true
+        // sparse: true
     },
     lastname: {
         type: String,
@@ -14,7 +14,8 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        // unique: true
+        // sparse: true
     },
     password: {
         type: String,

@@ -8,3 +8,8 @@
 20220914	23:09:09	8539dc78-c244-43aa-bf5c-f2fed1878908	SyntaxError: Unexpected string in JSON at position 189
 20220915	00:02:15	a2f249de-8df7-4ddf-bd95-d610a4a6f668	SyntaxError: Unexpected string in JSON at position 187
 20220916	01:54:56	136bef7a-9838-4334-9575-f65cefee63c0	SyntaxError: Unexpected string in JSON at position 214
+20220924	17:11:46	2a314be4-1e21-4979-9302-d5e73254438b	SyntaxError: Unexpected token A in JSON at position 52
+20220924	17:15:21	b825dc10-4871-4c95-b27c-7360afd9dd8f	SyntaxError: Unexpected token W in JSON at position 52
+20220924	17:16:38	98152519-0f0c-43c8-b7bd-653c3e38dd0c	SyntaxError: Unexpected token , in JSON at position 52
+20220924	17:43:28	665f9136-335d-4408-87cf-998199e89f3d	SyntaxError: Unexpected token ' in JSON at position 52
+20220924	21:38:04	d6ca337a-021e-4d7a-a081-648aa635fea6	Error: Cannot set headers after they are sent to the client

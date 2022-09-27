@@ -52,8 +52,7 @@ const deleteCategory = async (req, res) => {
 }
 
 const getCategory = async (req, res) => {
-    //request body should contain the id of the category that should be fetched
-    const id = req.body.id
+    const id = req.params.id
     const category = await Category.findById(id)
 
     if (!category) {
