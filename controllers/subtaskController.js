@@ -110,11 +110,40 @@ const getAllSubtasksOfMaintask = async (req, res) => {
     res.status(200).json(allSubtasks);
 }
 
-module.exports = {
+const acceptSubtask = async (req, res) => {
+    console.log("hii");
+    const s_id = req.params.id;
+    console.log(s_id);
+    const subTask = await Subtasks.findById(s_id);
+    console.log(subTask);
+  
+    if (!subTask) {
+      return res
+        .status(400)
+        .json({ message: `For Accepting: Subtasks ID with ${s_id} not found` });
+    }
+    console.log(subTask.assigned_employees);
+    for (var [key, value] of subTask.assigned_employees.entries()) {
+      console.log(key);
+      const user = await User.findById(key);
+      console.log(req.email);
+      console.log(user.email);
+      if (req.email === user.email) {
+        subTask.assigned_employees.set(key, true);
+      }
+    }
+  
+    subTask.updatedAt = new Date();
+    const result = await subTask.save();
+    res.status(200).json(result); //updated successfully
+  };
+  
+  module.exports = {
     getAllSubtasks,
     createNewSubtask,
     updateSubtask,
     deleteSubtask,
     getSubtask,
-    getAllSubtasksOfMaintask
-}
+    getAllSubtasksOfMaintask,
+    acceptSubtask,
+  };
