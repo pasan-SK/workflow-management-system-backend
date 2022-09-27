@@ -12,6 +12,9 @@ const handleLogin = async (req, res) => {
     // evaluate password 
     const match = bcryptjs.compareSync(pwd, foundUser.password);
     if (match) {
+        
+        // The `.filter(Boolean)` just removes values from a list which are "falsey", like empty strings or null.
+        // For eg: it converts{ Admin: 200, DI: 2001 } to [2000, 2001]
         const roles = Object.values(foundUser.roles).filter(Boolean);
 
         // create JWTs
@@ -36,10 +39,10 @@ const handleLogin = async (req, res) => {
         const result = await foundUser.save();    
 
         //********************SECURE*********************** */
-        /** make secure: false if using thunderclient
-         *  make secure: true when connecting backend with the UIs (in web app)
+        /** secure=false if using thunderclient or postman
+         *  secure=true when connecting backend with the UIs (in web app)
          */
-        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: false, maxAge: 24 * 60 * 60 * 1000 });
         res.json({roles, accessToken });
     } else {
         res.sendStatus(401); //unauthorized (wrong password)

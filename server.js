@@ -22,9 +22,10 @@ const categoryRoutes = require('./routes/api/categoryRoutes')
 const userRoutes = require('./routes/api/userRoutes')
 const mainTaskRoutes = require('./routes/api/mainTaskRoutes')
 const subtaskRoutes = require('./routes/api/subtaskRoutes')
+const notificationRoutes = require('./routes/api/notificationRoutes')
 
 // Connect to MongoDB
-connectDB();
+// connectDB();
 
 // custom middleware logger
 app.use(logger);
@@ -54,6 +55,7 @@ app.use('/logout', logoutRoute);
 // access token check for below routes
 app.use(verifyJWT);
 
+app.use('/notifications', notificationRoutes)
 app.use('/categories', categoryRoutes)
 app.use('/users', userRoutes)
 app.use('/mainTasks', mainTaskRoutes)
@@ -66,7 +68,9 @@ app.all('*', (req, res) => {
 
 app.use(errorHandler);
 
-mongoose.connection.once('open', () => {
-    console.log('Connected to MongoDB');
-    app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-});
+module.exports = app
+
+// mongoose.connection.once('open', () => {
+//     console.log('Connected to MongoDB');
+//     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// });
