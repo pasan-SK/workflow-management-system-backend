@@ -22,6 +22,7 @@ const categoryRoutes = require('./routes/api/categoryRoutes')
 const userRoutes = require('./routes/api/userRoutes')
 const mainTaskRoutes = require('./routes/api/mainTaskRoutes')
 const subtaskRoutes = require('./routes/api/subtaskRoutes')
+const notificationRoutes = require('./routes/api/notificationRoutes')
 
 // Connect to MongoDB
 // connectDB();
@@ -54,6 +55,7 @@ app.use('/logout', logoutRoute);
 // access token check for below routes
 app.use(verifyJWT);
 
+app.use('/notifications', notificationRoutes)
 app.use('/categories', categoryRoutes)
 app.use('/users', userRoutes)
 app.use('/mainTasks', mainTaskRoutes)
