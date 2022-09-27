@@ -1,5 +1,4 @@
 const request = require("supertest")
-// const supertest = require("supertest")
 const app = require("../server")
 const mongoose = require('mongoose');
 const agent = request.agent(app)

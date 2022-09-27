@@ -13,7 +13,6 @@ const verifyJWT = (req, res, next) => {
             if (err) return res.sendStatus(403); //invalid token - Forbidden
             req.email = decoded.UserInfo.email;
             req.roles = decoded.UserInfo.roles;
-            console.log("ROLES:", decoded.UserInfo.roles)
             next();
         }
     );
