@@ -12,6 +12,9 @@ const handleLogin = async (req, res) => {
     // evaluate password 
     const match = bcryptjs.compareSync(pwd, foundUser.password);
     if (match) {
+        
+        // The `.filter(Boolean)` just removes values from a list which are "falsey", like empty strings or null.
+        // For eg: it converts{ Admin: 200, DI: 2001 } to [2000, 2001]
         const roles = Object.values(foundUser.roles).filter(Boolean);
 
         // create JWTs
