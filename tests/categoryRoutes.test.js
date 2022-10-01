@@ -5,16 +5,13 @@ const agent = request.agent(app)
 
 const baseURL = "http://localhost:3500"
 
-beforeEach((done) => {
+beforeAll((done) => {
     mongoose.connect("mmongodb+srv://admin1:sPX8HNiPl3pbKaDQ@cluster0.tr1rexs.mongodb.net/WorkflowManagementSystemDB-test?retryWrites=true&w=majority",
         { useNewUrlParser: true, useUnifiedTopology: true },
         () => done());
 });
 
-afterEach((done) => {
-    // mongoose.connection.db.dropDatabase(() => {
-    //     mongoose.connection.close(() => done())
-    // });
+afterAll((done) => {
     mongoose.connection.close(() => done())
 });
 
@@ -73,11 +70,6 @@ describe('POST /categories', () => {
     describe("When made the request as an authorized employee", () => {
         test("should respond with a 201 status code", async () => {
 
-            const loginResponse = await request(app).post("/login").send(adminCredentials)
-            adminCookieName = loginResponse.headers['set-cookie'][0].split(',')[0].split(';')[0].split('=')[0]
-            adminCookieValue = loginResponse.headers['set-cookie'][0].split(',')[0].split(';')[0].split('=')[1]
-            adminAccessToken = loginResponse.body.accessToken
-
             const testResponse = await request(app).post("/categories").send({"name": "test-category-name"}).set("Authorization", `Bearer ${adminAccessToken}`)
             expect(testResponse.statusCode).toBe(201)
             expect(testResponse.body._id).toBeDefined()
@@ -88,11 +80,6 @@ describe('POST /categories', () => {
 describe('DELETE /categories', () => {
     describe("When made the request as an authorized employee", () => {
         test("should respond with a 200 status code", async () => {
-
-            const loginResponse = await request(app).post("/login").send(adminCredentials)
-            adminUserCookieName = loginResponse.headers['set-cookie'][0].split(',')[0].split(';')[0].split('=')[0]
-            adminUserCookieValue = loginResponse.headers['set-cookie'][0].split(',')[0].split(';')[0].split('=')[1]
-            adminUseraccessToken = loginResponse.body.accessToken
 
             const testResponse = await request(app).delete("/categories").send({"id": newCategoryID}).set("Authorization", `Bearer ${adminAccessToken}`)
             expect(testResponse.statusCode).toBe(200)
