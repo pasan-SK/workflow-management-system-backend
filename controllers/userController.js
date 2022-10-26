@@ -93,10 +93,34 @@ const getUser = async (req, res) => {
     res.status(200).json(user);
 }
 
+const changeStatus = async (req, res) => {
+    //request body should contain the new userStatus
+    if (!req.body.newUserStatus) {
+        return res.status(400).json({ 'message': 'new user status is required.' }); //bad request
+    }
+    const newUserStatus = req.body.newUserStatus
+    const id = req.params.id
+    const user = await User.findById(id).exec()
+    if (!user) {
+        return res.status(400).json({ "message": `User with id = ${id} is not found` }); //bad request
+    }
+
+    const currentStatus = user.userStatus
+    
+    if (currentStatus === newUserStatus) {
+        return res.status(200).json({"message": "No status change is required"})
+    }
+
+    user.userStatus = newUserStatus
+    const result = await user.save()
+    res.status(200).json(result); //updated successfully
+}
+
 module.exports = {
     getAllUsers,
     createNewUser,
     updateUser,
     deleteUser,
-    getUser
+    getUser,
+    changeStatus
 }
