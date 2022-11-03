@@ -89,7 +89,7 @@ const deleteSubtask = async (req, res) => {
 
 const getSubtask = async (req, res) => {
     //request body should contain the id of the subTask that should be fetched
-    const id = req.body.id
+    const id = req.body.id ? req.body.id : req.params.id
     const subTask = await Subtasks.findById(id)
     
     if (!subTask) {
@@ -104,17 +104,46 @@ const getAllSubtasksOfMaintask = async (req, res) => {
     const maintaskID = new ObjectId(id)
     const allSubtasks = await Subtasks.find({ "maintask_id":  maintaskID }).sort({ "_id": 1 })
 
-    if (!allSubtasks) {
+    if (!allSubtasks || allSubtasks.length == 0) {
         return res.status(400).json({ "message": `Subtasks with maintasksID=${req.params.id} not found` });  //bad request
     }
     res.status(200).json(allSubtasks);
 }
 
-module.exports = {
+const acceptSubtask = async (req, res) => {
+    console.log("hii");
+    const s_id = req.params.id;
+    console.log(s_id);
+    const subTask = await Subtasks.findById(s_id);
+    console.log(subTask);
+  
+    if (!subTask) {
+      return res
+        .status(400)
+        .json({ message: `For Accepting: Subtasks ID with ${s_id} not found` });
+    }
+    console.log(subTask.assigned_employees);
+    for (var [key, value] of subTask.assigned_employees.entries()) {
+      console.log(key);
+      const user = await User.findById(key);
+      console.log(req.email);
+      console.log(user.email);
+      if (req.email === user.email) {
+        subTask.assigned_employees.set(key, true);
+      }
+    }
+  
+    subTask.updatedAt = new Date();
+    const result = await subTask.save();
+    res.status(200).json(result); //updated successfully
+  };
+  
+  module.exports = {
     getAllSubtasks,
     createNewSubtask,
     updateSubtask,
     deleteSubtask,
     getSubtask,
-    getAllSubtasksOfMaintask
-}
+    getAllSubtasksOfMaintask,
+    acceptSubtask,
+  };

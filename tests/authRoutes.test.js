@@ -5,16 +5,13 @@ const agent = request.agent(app)
 
 const baseURL = "http://localhost:3500"
 
-beforeEach((done) => {
+beforeAll((done) => {
     mongoose.connect("mmongodb+srv://admin1:sPX8HNiPl3pbKaDQ@cluster0.tr1rexs.mongodb.net/WorkflowManagementSystemDB-test?retryWrites=true&w=majority",
         { useNewUrlParser: true, useUnifiedTopology: true },
         () => done());
 });
 
-afterEach((done) => {
-    // mongoose.connection.db.dropDatabase(() => {
-    //     mongoose.connection.close(() => done())
-    // });
+afterAll((done) => {
     mongoose.connection.close(() => done())
 });
 
