@@ -51,7 +51,7 @@ const handleNewUser = async (req, res) => {
             });
 
         }else{
-            res.status(401).json({'message':'Not Acceptable Email'});
+            res.status(406).json({'message':'Not Acceptable Email'});
         }
                
     } catch (err) {

@@ -29,7 +29,7 @@ describe("POST /register", () => {
             const credentials = {
                 firstname: "test-firstname-1",
                 lastname: "test-lastname-1",
-                email,
+                email:"javatest190283@gmail.com",
                 pwd
             }
 
@@ -37,6 +37,21 @@ describe("POST /register", () => {
             expect(response.statusCode).toBe(201)
             expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(response.body.id).toBeDefined()
+        })
+    })
+
+    describe("given an email address", () => {
+        test("should respond with a 401 status code if it isn't an existing email address", async () => {
+
+            const credentials = {
+                firstname: "test-firstname-1",
+                lastname: "test-lastname-1",
+                email,
+                pwd
+            }
+
+            const response = await request(app).post("/register").send(credentials)
+            expect(response.statusCode).toBe(406);
         })
     })
 
