@@ -11,6 +11,12 @@ router.route('/')
     .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), userController.deleteUser);
 
 router.route('/:id')
-    .get(userController.getUser);
+    .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), userController.getUser);
     
+router.route('/changeStatus/:id')
+    .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), userController.changeStatus);
+
+router.route('/changeRoles/:id')
+    .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), userController.changeRoles);
+
 module.exports = router;
