@@ -1,7 +1,12 @@
-const emailValidator = require('deep-email-validator');
+const allDomains = require('../config/emailDomainList');
 
 const isValidEmail = async (email) => {
-    return emailValidator.validate(email)
+    const domain = email.split('@')[1].trim()
+    if(allDomains.includes(domain)){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 module.exports = {isValidEmail}

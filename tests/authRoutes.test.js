@@ -87,7 +87,7 @@ describe("POST /login", () => {
         test("should respond with status code 200 and accessToken should be returned as json", async () => {
 
             const loginCredentials = {
-                email,
+                email:'javatest190283@gmail.com',
                 pwd
             }
 
@@ -104,7 +104,7 @@ describe("POST /login", () => {
 
             const bodyData = [
                 { pwd },
-                { email },
+                { email:'javatest190283@gmail.com' },
                 {}
             ]
             for (const body of bodyData) {
@@ -122,7 +122,7 @@ describe("POST /login", () => {
                     pwd
                 },
                 {
-                    email,
+                    email:'javatest190283@gmail.com',
                     pwd: "invalid_password"
                 },
                 {

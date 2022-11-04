@@ -20,7 +20,7 @@ const handleNewUser = async (req, res) => {
         /* NOTE: At the registration user roles are not specified. 
         *  Only admin/Di can specify the user role through his interface later 
         */
-        const {valid, reason, validator} = await emailValidator.isValidEmail(email);
+        const valid = await emailValidator.isValidEmail(email);
         // const valid = true;
 
         if(valid){
