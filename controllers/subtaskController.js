@@ -89,7 +89,6 @@ const deleteSubtask = async (req, res) => {
 }
 
 const getSubtask = async (req, res) => {
-    console.log("hi");
     //request body should contain the id of the subTask that should be fetched
 
     // const id = req.params.id;
@@ -118,23 +117,16 @@ const getAllSubtasksOfMaintask = async (req, res) => {
 }
 
 const acceptSubtask = async (req, res) => {
-    console.log("accccccccc");
     const s_id = req.params.id;
-    console.log(s_id);
     const subTask = await Subtasks.findById(s_id);
-    console.log(subTask);
   
     if (!subTask) {
       return res
         .status(400)
         .json({ message: `For Accepting: Subtasks ID with ${s_id} not found` });
     }
-    console.log(subTask.assigned_employees);
     for (var [key, value] of subTask.assigned_employees.entries()) {
-      console.log(key);
       const user = await User.findById(key);
-      console.log(req.email);
-      console.log(user.email);
       if (req.email === user.email) {
         var userId=user.id;
         subTask.assigned_employees.set(key, (value ? false:true));
@@ -147,10 +139,8 @@ const acceptSubtask = async (req, res) => {
     
   };
   const checkingAcceptance=async(req,res)=>{
-    console.log("ddddddd");
     const s_id=req.params.id;
     const subTask = await Subtasks.findById(s_id);
-    console.log(subTask);
   
     if (!subTask) {
       return res
@@ -158,10 +148,7 @@ const acceptSubtask = async (req, res) => {
         .json({ message: `For Accepting: Subtasks mail with ${email} not found` });
     }
     for (var [key, value] of subTask.assigned_employees.entries()) {
-      console.log(key);
       const user = await User.findById(key);
-      console.log(req.email);
-      console.log(user.email);
       if (req.email === user.email) {
         const acceptStatus=value;
         // if(acceptStatus){
