@@ -1,5 +1,6 @@
 const Subtasks = require("../model/Subtasks")
 const bcryptjs = require('bcryptjs');
+const User=require("../model/User");
 
 let ObjectId = require('mongodb').ObjectId
 
@@ -88,8 +89,14 @@ const deleteSubtask = async (req, res) => {
 }
 
 const getSubtask = async (req, res) => {
+    console.log("hi");
     //request body should contain the id of the subTask that should be fetched
+
+    // const id = req.params.id;
+    // console.log(id);
+
     const id = req.body.id ? req.body.id : req.params.id
+
     const subTask = await Subtasks.findById(id)
     
     if (!subTask) {
@@ -111,7 +118,7 @@ const getAllSubtasksOfMaintask = async (req, res) => {
 }
 
 const acceptSubtask = async (req, res) => {
-    console.log("hii");
+    console.log("accccccccc");
     const s_id = req.params.id;
     console.log(s_id);
     const subTask = await Subtasks.findById(s_id);
@@ -129,15 +136,45 @@ const acceptSubtask = async (req, res) => {
       console.log(req.email);
       console.log(user.email);
       if (req.email === user.email) {
-        subTask.assigned_employees.set(key, true);
+        var userId=user.id;
+        subTask.assigned_employees.set(key, (value ? false:true));
+        subTask.updatedAt = new Date();
+        const result = await subTask.save();
+        res.status(200).json(userId); //updated successfully
       }
     }
   
-    subTask.updatedAt = new Date();
-    const result = await subTask.save();
-    res.status(200).json(result); //updated successfully
+    
   };
+  const checkingAcceptance=async(req,res)=>{
+    console.log("ddddddd");
+    const s_id=req.params.id;
+    const subTask = await Subtasks.findById(s_id);
+    console.log(subTask);
   
+    if (!subTask) {
+      return res
+        .status(400)
+        .json({ message: `For Accepting: Subtasks mail with ${email} not found` });
+    }
+    for (var [key, value] of subTask.assigned_employees.entries()) {
+      console.log(key);
+      const user = await User.findById(key);
+      console.log(req.email);
+      console.log(user.email);
+      if (req.email === user.email) {
+        const acceptStatus=value;
+        // if(acceptStatus){
+        //     console.log(acceptStatus);
+        // }
+        
+        res.status(200).json(acceptStatus);
+
+      }
+    }
+
+
+  }
   module.exports = {
     getAllSubtasks,
     createNewSubtask,
@@ -146,4 +183,6 @@ const acceptSubtask = async (req, res) => {
     getSubtask,
     getAllSubtasksOfMaintask,
     acceptSubtask,
+    checkingAcceptance,
+
   };
