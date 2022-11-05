@@ -91,8 +91,12 @@ const deleteSubtask = async (req, res) => {
 const getSubtask = async (req, res) => {
     console.log("hi");
     //request body should contain the id of the subTask that should be fetched
-    const id = req.params.id;
-    console.log(id);
+
+    // const id = req.params.id;
+    // console.log(id);
+
+    const id = req.body.id ? req.body.id : req.params.id
+
     const subTask = await Subtasks.findById(id)
     
     if (!subTask) {
@@ -107,7 +111,7 @@ const getAllSubtasksOfMaintask = async (req, res) => {
     const maintaskID = new ObjectId(id)
     const allSubtasks = await Subtasks.find({ "maintask_id":  maintaskID }).sort({ "_id": 1 })
 
-    if (!allSubtasks) {
+    if (!allSubtasks || allSubtasks.length == 0) {
         return res.status(400).json({ "message": `Subtasks with maintasksID=${req.params.id} not found` });  //bad request
     }
     res.status(200).json(allSubtasks);

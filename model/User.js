@@ -55,9 +55,13 @@ const userSchema = new Schema({
             type: Number,
         }
     },
+    confirmation: {
+        type: Number,
+        default: 0
+    },
     userStatus: {
         type: Number,
-        default: 1  //1-active user, 0-deleted user
+        default: 0  //1-active user, 0-not given access user,  -1-deleted user
     },
     refreshToken: String
 })

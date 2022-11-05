@@ -17,7 +17,8 @@ const handleLogin = async (req, res) => {
         // The `.filter(Boolean)` just removes values from a list which are "falsey", like empty strings or null.
         // For eg: it converts{ Admin: 200, DI: 2001 } to [2000, 2001]
         const roles = Object.values(foundUser.roles).filter(Boolean);
-
+        const firstname = foundUser.firstname;
+        const id = foundUser.id;
         // create JWTs
         const accessToken = jwt.sign(
             {
@@ -44,7 +45,7 @@ const handleLogin = async (req, res) => {
          *  secure=true when connecting backend with the UIs (in web app)
          */
         res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: false, maxAge: 24 * 60 * 60 * 1000 });
-        res.json({roles, accessToken });
+        res.json({firstname, id, roles, accessToken });
     } else {
         res.sendStatus(401); //unauthorized (wrong password)
     }

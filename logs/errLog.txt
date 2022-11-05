@@ -13,3 +13,6 @@
 20220924	17:16:38	98152519-0f0c-43c8-b7bd-653c3e38dd0c	SyntaxError: Unexpected token , in JSON at position 52
 20220924	17:43:28	665f9136-335d-4408-87cf-998199e89f3d	SyntaxError: Unexpected token ' in JSON at position 52
 20220924	21:38:04	d6ca337a-021e-4d7a-a081-648aa635fea6	Error: Cannot set headers after they are sent to the client
+20221004	07:22:42	3e9f2444-1b08-4f93-810f-7ba6a3adee5d	SyntaxError: Unexpected string in JSON at position 308
+20221004	07:43:15	44a82454-425c-446b-b204-77aaeb8238de	Error: Not allowed by CORS
+20221004	07:43:15	567e40bf-48f3-4d06-88a2-b1e70b7eba9f	Error: Not allowed by CORS

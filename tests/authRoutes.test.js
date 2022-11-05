@@ -5,16 +5,13 @@ const agent = request.agent(app)
 
 const baseURL = "http://localhost:3500"
 
-beforeEach((done) => {
+beforeAll((done) => {
     mongoose.connect("mmongodb+srv://admin1:sPX8HNiPl3pbKaDQ@cluster0.tr1rexs.mongodb.net/WorkflowManagementSystemDB-test?retryWrites=true&w=majority",
         { useNewUrlParser: true, useUnifiedTopology: true },
         () => done());
 });
 
-afterEach((done) => {
-    // mongoose.connection.db.dropDatabase(() => {
-    //     mongoose.connection.close(() => done())
-    // });
+afterAll((done) => {
     mongoose.connection.close(() => done())
 });
 
@@ -29,7 +26,7 @@ describe("POST /register", () => {
             const credentials = {
                 firstname: "test-firstname-1",
                 lastname: "test-lastname-1",
-                email,
+                email:"javatest190283@gmail.com",
                 pwd
             }
 
@@ -37,6 +34,21 @@ describe("POST /register", () => {
             expect(response.statusCode).toBe(201)
             expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(response.body.id).toBeDefined()
+        })
+    })
+
+    describe("given an email address", () => {
+        test("should respond with a 401 status code if it isn't an existing email address", async () => {
+
+            const credentials = {
+                firstname: "test-firstname-1",
+                lastname: "test-lastname-1",
+                email,
+                pwd
+            }
+
+            const response = await request(app).post("/register").send(credentials)
+            expect(response.statusCode).toBe(406);
         })
     })
 
@@ -75,7 +87,7 @@ describe("POST /login", () => {
         test("should respond with status code 200 and accessToken should be returned as json", async () => {
 
             const loginCredentials = {
-                email,
+                email:'javatest190283@gmail.com',
                 pwd
             }
 
@@ -92,7 +104,7 @@ describe("POST /login", () => {
 
             const bodyData = [
                 { pwd },
-                { email },
+                { email:'javatest190283@gmail.com' },
                 {}
             ]
             for (const body of bodyData) {
@@ -110,7 +122,7 @@ describe("POST /login", () => {
                     pwd
                 },
                 {
-                    email,
+                    email:'javatest190283@gmail.com',
                     pwd: "invalid_password"
                 },
                 {
