@@ -4,8 +4,8 @@ import { check, sleep } from 'k6'
 export let options = {
     insecureSkipTLSVerify: true,
     noConnectionReuse: false,
-    vus: 50,
-    duration: '3s',
+    vus: 20,
+    duration: '10s',
     thresholds: {
         http_req_failed: ['rate<0.01'],
         http_req_duration: ['p(90)<9000'],

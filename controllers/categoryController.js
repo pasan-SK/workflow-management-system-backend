@@ -1,10 +1,10 @@
 const Category = require("../model/Category")
+const { logEvents } = require("../middleware/logEvents")
 
 const getAllCategories = async (req, res) => {
     const result = await Category.find({})
     if(!result) res.status(204).json({"message": "No categories found"}) //no content
     if(result.length === 0) res.status(204).json({"message": "No categories found"}) //no content
-
     else res.status(200).json(result);
 }
 
@@ -16,7 +16,7 @@ const createNewCategory = async (req, res) => {
 
     const name = req.body.name
     const result = await Category.create({ name })
-    
+    logEvents(`CATEGORY CREATION\t${req.email}\t${name}\t${result._id}`, 'categoriesLog.txt')
     res.status(201).json(result); //created
 }
 
@@ -32,6 +32,7 @@ const updateCategory = async (req, res) => {
     }
     if (req.body.name) category.name = req.body.name;
     const result = await category.save()
+    logEvents(`CATEGORY UPDATE\t${req.email}\t${result.name}\t${id}`, 'categoriesLog.txt')
     res.status(200).json(result); //updated successfully
 }
 
@@ -48,6 +49,7 @@ const deleteCategory = async (req, res) => {
     }
 
     const result = await Category.deleteOne({ _id: id })
+    logEvents(`CATEGORY DELETE\t${req.email}\t${id}`, 'categoriesLog.txt')
     res.status(200).json(result);
 }
 
