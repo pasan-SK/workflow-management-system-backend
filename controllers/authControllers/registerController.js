@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const ROLES_LIST = require('../../config/roles_list')
 const nodemailer = require('../../config/nodemailer.config');
 const emailValidator = require('../../middleware/emailValidator');
+const { logEvents } = require("../../middleware/logEvents")
 
 const handleNewUser = async (req, res) => {
     let { email, pwd, firstname, lastname } = req.body;
@@ -37,6 +38,7 @@ const handleNewUser = async (req, res) => {
                     document._id
                 ).then(result => {
                     if(result){
+                        logEvents(`${email}\t${firstname} ${lastname}\t${document._id}`, 'registerLog.txt')
                         res.status(201).json({'id':document._id});
                     }else{
                         User.deleteOne({ _id: document._id }).then(del=>{

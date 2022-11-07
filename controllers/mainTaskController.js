@@ -1,5 +1,6 @@
 const MainTask = require("../model/MainTask")
 const bcryptjs = require('bcryptjs');
+const { logEvents } = require("../middleware/logEvents")
 
 const getAllMainTasks = async (req, res) => {
     const result = await MainTask.find({}).sort({_id: -1})
@@ -41,7 +42,7 @@ const createNewMainTask = async (req, res) => {
             "updatedAt": new Date()
         })
     }
-
+    logEvents(`MAINTASK CREATION\t${req.email}\t${result._id}`, 'mainTasksLog.txt')
     res.status(201).json(result); //created
 }
 
@@ -63,6 +64,7 @@ const updateMainTask = async (req, res) => {
     mainTask.updatedAt = new Date();
 
     const result = await mainTask.save()
+    logEvents(`MAINTASK UPDATE\t${req.email}\t${id}`, 'mainTasksLog.txt')
     res.status(200).json(result); //updated successfully
 }
 
@@ -78,6 +80,7 @@ const deleteMainTask = async (req, res) => {
         return res.status(400).json({ "message": `MainTask with ID ${req.body.id} not found` }); //bad request
     }
     const result = await MainTask.deleteOne({ _id: id })
+    logEvents(`MAINTASK DELETE\t${req.email}\t${id}`, 'mainTasksLog.txt')
     res.status(200).json(result);
 }
 
