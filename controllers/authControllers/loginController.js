@@ -1,6 +1,7 @@
 const User = require('../../model/User')
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { logEvents } = require("../../middleware/logEvents")
 
 const handleLogin = async (req, res) => {
     const { email, pwd } = req.body;
@@ -43,6 +44,7 @@ const handleLogin = async (req, res) => {
         foundUser.refreshToken = refreshToken;
         const result = await foundUser.save();    
 
+        logEvents(`LOGIN\t${email}\t${id}`, 'loginLogoutLog.txt')
         //********************SECURE*********************** */
         /** secure=false if using thunderclient or postman
          *  secure=true when connecting backend with the UIs (in web app)

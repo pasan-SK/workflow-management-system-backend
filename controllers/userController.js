@@ -1,5 +1,6 @@
 const User = require("../model/User")
 const bcryptjs = require('bcryptjs');
+const { logEvents } = require("../middleware/logEvents")
 
 const getAllUsers = async (req, res) => {
     const result = await User.find({})
@@ -30,7 +31,7 @@ const createNewUser = async (req, res) => {
         "password": hashedPwd,
         "roles": roles
     })
-
+    logEvents(`USER CREATION\t${req.email}\t${result._id}`, 'usersLog.txt')
     res.status(201).json(result); //created
 }
 
@@ -65,6 +66,7 @@ const updateUser = async (req, res) => {
     if (req.body.status) user.status = req.body.status
 
     const result = await user.save()
+    logEvents(`USER UPDATE\t${req.email}\t${id}`, 'usersLog.txt')
     res.status(200).json(result); //updated successfully
 }
 
@@ -80,6 +82,7 @@ const deleteUser = async (req, res) => {
         return res.status(400).json({ "message": `User with ID ${req.body.id} not found` }); //bad request
     }
     const result = await User.deleteOne({ _id: id })
+    logEvents(`USER DELETE\t${req.email}\t${id}`, 'usersLog.txt')
     res.status(200).json(result);
 }
 
@@ -113,6 +116,7 @@ const changeStatus = async (req, res) => {
 
     user.userStatus = newUserStatus
     const result = await user.save()
+    logEvents(`USER STATUS CHANGE\t${req.email}\t${id}\t${newUserStatus}`, 'usersLog.txt')
     res.status(200).json(result); //updated successfully
 }
 
@@ -136,6 +140,7 @@ const changeRoles = async (req, res) => {
 
     user.roles = newRolesList
     const result = await user.save()
+    logEvents(`USER ROLES CHANGE\t${req.email}\t${id}\t${newRolesList}`, 'usersLog.txt')
     res.status(200).json(result); //updated successfully
 }
 
