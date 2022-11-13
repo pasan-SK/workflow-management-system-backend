@@ -11,7 +11,11 @@ const handleLogin = async (req, res) => {
 
     // evaluate password 
     const match = bcryptjs.compareSync(pwd, foundUser.password);
-    if (match) {
+
+    // check user status
+    const confirmation = foundUser.userStatus===1 && foundUser.confirmation===1;
+
+    if (match && confirmation) {
         
         // The `.filter(Boolean)` just removes values from a list which are "falsey", like empty strings or null.
         // For eg: it converts{ Admin: 200, DI: 2001 } to [2000, 2001]
