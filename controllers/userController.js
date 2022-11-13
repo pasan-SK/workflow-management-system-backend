@@ -144,6 +144,29 @@ const changeRoles = async (req, res) => {
     res.status(200).json(result); //updated successfully
 }
 
+const changePassword = async (req, res) => {
+    const id = req.params.id;
+    const user = await User.findById(id);
+    const {oldpwd, newpwd} = req.body;
+
+    if(!user) {
+        return res.status(400).json({"message":"Something went wrong"});
+    }
+
+    const match = bcryptjs.compareSync(oldpwd, user.password)
+
+    if(match) {
+        const hashedPwd = bcryptjs.hashSync(newpwd, 10);
+        user.password = hashedPwd;
+        const result = await user.save();
+        res.status(200).json(result);
+    }else {
+        res.sendStatus(406); //wrong old password
+    }
+
+    
+}
+
 module.exports = {
     getAllUsers,
     createNewUser,
@@ -151,5 +174,6 @@ module.exports = {
     deleteUser,
     getUser,
     changeStatus,
-    changeRoles
+    changeRoles,
+    changePassword
 }
