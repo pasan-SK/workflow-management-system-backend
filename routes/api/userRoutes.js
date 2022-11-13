@@ -13,7 +13,8 @@ router.route('/')
 router.route('/:id')
     .get(userController.getUser);
 
-
+router.route('/password/:id')
+    .patch(userController.changePassword);
     
 router.route('/changeStatus/:id')
     .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), userController.changeStatus);

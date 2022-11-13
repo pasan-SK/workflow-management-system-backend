@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const nodemailer = require('nodemailer');
-const CONFIRM_API = 'http://localhost:3500/public/email/confirm'
+const CONFIRM_API = process.env.HOST_DOMAIN+ 'public/email/confirm'
 const user = process.env.EMAIL
 const password = process.env.EMAIL_PASS
 
