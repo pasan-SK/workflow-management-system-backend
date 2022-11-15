@@ -45,7 +45,9 @@ const getLimitedNotifications = async (req, res) => {
         });
     }
 
-    const user = await User.findOne({"email":req.email}).exec();
+    const email = req?.email;
+
+    const user = await User.findOne({"email":email}).exec();
 
     if(!user || user.length == 0) {
         res.status(403).json({"message":"Not a registered user"});
@@ -67,7 +69,7 @@ const getLimitedNotifications = async (req, res) => {
 
     if(!allNotifications || allNotifications.length == 0) {
         // No Content
-        return res.status(204).json();
+        return res.status(204).json({notifications: {}});
     }
 
     const result = allNotifications.map(( notification, index) => {
