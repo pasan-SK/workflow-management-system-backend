@@ -5,9 +5,9 @@ const ROLES_LIST = require('../../config/roles_list');
 const verifyRoles = require('../../middleware/verifyRoles');
 
 router.route('/')
-    .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), subtaskController.getAllSubtasks)
+    .get(subtaskController.getAllSubtasks)
     .post(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), subtaskController.createNewSubtask)
-    .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), subtaskController.updateSubtask)
+    .put(subtaskController.updateSubtask)
     .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), subtaskController.deleteSubtask);
 
 router.route('/:id')
@@ -19,6 +19,6 @@ router.route('/:id')
 router.route('/acceptance/:id').get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI,ROLES_LIST.DI,ROLES_LIST.EA), subtaskController.checkingAcceptance)
 
 router.route('/of-maintask/:id')
-    .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), subtaskController.getAllSubtasksOfMaintask)
+    .get(subtaskController.getAllSubtasksOfMaintask)
 
 module.exports = router;
