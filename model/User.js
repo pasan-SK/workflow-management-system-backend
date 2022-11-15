@@ -21,6 +21,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    tempPassword: {
+        type: String,
+        default:''
+    },
     roles: {
         // User: {
         //     type: Number,

@@ -16,6 +16,7 @@ const PORT = process.env.PORT || 3500;
 //Routes
 const registerRoutes = require('./routes/authRoutes/register')
 const loginRoutes = require('./routes/authRoutes/login')
+const resetRoutes = require('./routes/authRoutes/reset')
 const refreshRoutes = require('./routes/authRoutes/refresh')
 const logoutRoute = require('./routes/authRoutes/logout')
 const categoryRoutes = require('./routes/api/categoryRoutes')
@@ -52,6 +53,7 @@ app.use('/register', registerRoutes);
 app.use('/login', loginRoutes);
 app.use('/refresh', refreshRoutes);
 app.use('/logout', logoutRoute);
+app.use('/password', resetRoutes);
 app.use('/public', publicRoute);
 
 // access token check for below routes
