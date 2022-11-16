@@ -125,7 +125,7 @@ const createNewNotifications = async (req, res) => {
         }
 
         const category = notifications.category_id.name;
-        const link = 'dashboard/products'
+        const link = `/dashboard/workflow?id=${project_id}`
         
         // const subTasks = await SubTasks.find({maintask_id: ObjectId(project_id)}).exec();
 
