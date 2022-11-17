@@ -10,6 +10,12 @@ router.route('/')
     .put(subtaskController.updateSubtask)
     .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), subtaskController.deleteSubtask);
 
+router.route('/completedTotal')
+    .get(subtaskController.getCompletedTotal)
+
+router.route('/pendingTotal')
+    .get(subtaskController.getPendingTotal)
+
 router.route('/:id')
     .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI,ROLES_LIST.DI,ROLES_LIST.EA), subtaskController.getSubtask)
     .put(
