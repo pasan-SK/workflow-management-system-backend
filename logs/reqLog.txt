@@ -20297,3 +20297,6 @@
 20221117	04:09:50	ea3011f4-88e3-48cc-bf9d-f15934274834	OPTIONS	http://localhost:3000	/notifications/6
 20221117	04:09:50	204bff7e-4f10-460c-8aea-05dbeac49b1a	GET	http://localhost:3000	/fileUpload/multiple
 20221117	04:09:50	38aa1ac0-38da-4a33-a333-336288a5e560	GET	http://localhost:3000	/notifications/6
+20221117	10:12:48	a01aad61-5d5e-498d-98d2-2d7221aacb78	OPTIONS	http://localhost:3000	/notifications/6
+20221117	10:12:48	65de9c0c-56c7-4f32-91af-29059df873f7	GET	http://localhost:3000	/notifications/6
+20221117	10:12:48	429fc915-ec96-4190-ac58-b62e32b51f07	GET	http://localhost:3000	/refresh
