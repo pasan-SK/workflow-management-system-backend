@@ -25,6 +25,7 @@ const mainTaskRoutes = require('./routes/api/mainTaskRoutes')
 const subtaskRoutes = require('./routes/api/subtaskRoutes')
 const notificationRoutes = require('./routes/api/notificationRoutes')
 const publicRoute = require('./routes/api/publicRoute')
+const fileUploadRoutes=require('./routes/api/fileUploadRoutes')
 
 // Connect to MongoDB
 // connectDB();
@@ -64,6 +65,8 @@ app.use('/categories', categoryRoutes)
 app.use('/users', userRoutes)
 app.use('/mainTasks', mainTaskRoutes)
 app.use('/subtasks', subtaskRoutes)
+app.use('/fileUpload',fileUploadRoutes)
+// app.use('/personal', )
 
 // 404
 app.all('*', (req, res) => {
