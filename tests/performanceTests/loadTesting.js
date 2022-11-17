@@ -2,13 +2,14 @@ import http from 'k6/http'
 import { check, sleep } from 'k6'
 
 export let options = {
-    insecureSkipTLSVerify: true,
-    noConnectionReuse: false,
-    vus: 10,
-    duration: '3s',
+    stages: [
+        { duration: '2m', target: 100 }, // simulate the ramp-up of traffic from 1 user to 100 users
+        { duration: '5m', target: 100 }, // stay at 100 users for 5mins
+        { duration: '2m', target: 0 }  // simulate ramp-down
+    ],
     thresholds: {
         http_req_failed: ['rate<0.01'],
-        http_req_duration: ['p(90)<5000'],
+        http_req_duration: ['p(90)<2000'],
     }
 }
 

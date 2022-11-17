@@ -1,4 +1,5 @@
 const User = require("../../model/User")
+const { logEvents } = require("../../middleware/logEvents")
 
 const handleLogout = async (req, res) => {
     // also delete the accessToken (in frontend side)
@@ -15,9 +16,13 @@ const handleLogout = async (req, res) => {
     }
 
     // Delete refreshToken in db
+    const email = foundUser.email
+    const id = foundUser._id
     foundUser.refreshToken = ''
     const result = await foundUser.save()
     console.log("REFRESH TOKEN DELETED", result);
+
+    logEvents(`LOGOUT\t${email}\t${id}`, 'loginLogoutLog.txt')
 
     res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
     res.sendStatus(204);

@@ -16,8 +16,9 @@ afterAll((done) => {
 });
 
 const randomInt = Date.now()
-const email = `test@${randomInt}.com`
+const email = `test${randomInt}@gmail.com`
 const pwd = "password1@A"
+let newUserId = ''
 
 describe("POST /register", () => {
     describe("given a valid email and password", () => {
@@ -26,24 +27,27 @@ describe("POST /register", () => {
             const credentials = {
                 firstname: "test-firstname-1",
                 lastname: "test-lastname-1",
-                email:"javatest190283@gmail.com",
+                email,
                 pwd
             }
-
-            const response = await request(app).post("/register").send(credentials)
+            
+            const response = await request(app).post("/register").send(credentials)   
             expect(response.statusCode).toBe(201)
             expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(response.body.id).toBeDefined()
+            const response2 = await request(app).get(`/public/email/confirm/${response.body.id}`)
+            expect(response2.statusCode).toBe(200);
+
         })
     })
 
     describe("given an email address", () => {
-        test("should respond with a 401 status code if it isn't an existing email address", async () => {
+        test("should respond with a 406 status code if it isn't an existing valid email address", async () => {
 
             const credentials = {
                 firstname: "test-firstname-1",
                 lastname: "test-lastname-1",
-                email,
+                email: `test${randomInt}@${randomInt}.com`,
                 pwd
             }
 
@@ -64,7 +68,7 @@ describe("POST /register", () => {
                 {
                     firstname: "test-firstname-1",
                     lastname: "test-lastname-1",
-                    email: `test@${Date.now()}.com`
+                    email: `test${Date.now()}@gmail.com`
                 },
                 {
                     firstname: "test-firstname-1",
@@ -87,7 +91,7 @@ describe("POST /login", () => {
         test("should respond with status code 200 and accessToken should be returned as json", async () => {
 
             const loginCredentials = {
-                email:'javatest190283@gmail.com',
+                email,
                 pwd
             }
 
@@ -104,7 +108,7 @@ describe("POST /login", () => {
 
             const bodyData = [
                 { pwd },
-                { email:'javatest190283@gmail.com' },
+                { email },
                 {}
             ]
             for (const body of bodyData) {
@@ -118,11 +122,11 @@ describe("POST /login", () => {
 
             const bodyData = [
                 {
-                    email: "invalid_email@test.com",
+                    email: "invalid_email@gmail.com",
                     pwd
                 },
                 {
-                    email:'javatest190283@gmail.com',
+                    email,
                     pwd: "invalid_password"
                 },
                 {
@@ -165,12 +169,27 @@ describe("GET /refresh", () => {
         })
     });
 })
+
+const adminCredentials = {
+    email: "d@d.com",
+    pwd: "d@d.com"
+}
+let adminAccessToken = ''
+
 describe("GET /logout", () => {
     describe("When made the logout request", () => {
         test("should respond with status code 204 (No content)", async () => {
 
             const response = await request(app).get("/logout")
             expect(response.statusCode).toBe(204)
+            
+            const loginResponse = await request(app).post("/login").send(adminCredentials)
+            adminAccessToken = loginResponse.body.accessToken
+            
+            const deleteResponse = await request(app).delete("/users").send({"id": newUserId}).set("Authorization", `Bearer ${adminAccessToken}`)
+            expect(deleteResponse.statusCode).toBe(200)
+            expect(deleteResponse.headers['content-type']).toEqual(expect.stringContaining("json"))
+            expect(deleteResponse.body.deletedCount).toEqual(1)            
         })
     });
 })

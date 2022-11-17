@@ -15,7 +15,7 @@ const confirmUser = async (req, res) => {
     user.confirmation = 1;
     const result = await user.save();
     
-    return res.status(200).json({"message":result.confirmation});
+    return res.status(200).json({"message":`User confirmed: ${result.confirmation}`});
 }
 
 module.exports = {

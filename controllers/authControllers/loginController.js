@@ -1,9 +1,9 @@
 const User = require('../../model/User')
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { logEvents } = require("../../middleware/logEvents")
 
 const handleLogin = async (req, res) => {
-    console.log("Logged");
     const { email, pwd } = req.body;
     if (!email || !pwd) return res.status(400).json({ 'message': 'Email and password are required.' });
     
@@ -12,7 +12,11 @@ const handleLogin = async (req, res) => {
 
     // evaluate password 
     const match = bcryptjs.compareSync(pwd, foundUser.password);
-    if (match) {
+
+    // check user status
+    const confirmation = foundUser.userStatus===1 && foundUser.confirmation===1;
+
+    if (match && confirmation) {
         
         // The `.filter(Boolean)` just removes values from a list which are "falsey", like empty strings or null.
         // For eg: it converts{ Admin: 200, DI: 2001 } to [2000, 2001]
@@ -40,6 +44,7 @@ const handleLogin = async (req, res) => {
         foundUser.refreshToken = refreshToken;
         const result = await foundUser.save();    
 
+        logEvents(`LOGIN\t${email}\t${id}`, 'loginLogoutLog.txt')
         //********************SECURE*********************** */
         /** secure=false if using thunderclient or postman
          *  secure=true when connecting backend with the UIs (in web app)
