@@ -163,8 +163,11 @@ const changePassword = async (req, res) => {
     }else {
         res.sendStatus(406); //wrong old password
     }
+}
 
-    
+const getTotal = async (req, res) => {
+    const count = await User.count({});
+    res.status(200).json({ total: count });
 }
 
 module.exports = {
@@ -175,5 +178,6 @@ module.exports = {
     getUser,
     changeStatus,
     changeRoles,
-    changePassword
+    changePassword,
+    getTotal
 }

@@ -10,6 +10,9 @@ router.route('/')
     .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), mainTaskController.updateMainTask)
     .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), mainTaskController.deleteMainTask);
 
+router.route('/total')
+    .get(mainTaskController.getTotal)
+
 router.route('/:id')
     .get(mainTaskController.getMainTask);
 

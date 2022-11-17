@@ -1,6 +1,6 @@
 const Subtasks = require("../model/Subtasks")
 const bcryptjs = require('bcryptjs');
-const User=require("../model/User");
+const User = require("../model/User");
 const { logEvents } = require("../middleware/logEvents")
 let ObjectId = require('mongodb').ObjectId
 
@@ -33,7 +33,8 @@ const createNewSubtask = async (req, res) => {
             "note": note,
             "createdAt": new Date(),
             "updatedAt": new Date(),
-            "deadline": req.body.deadline
+            "deadline": req.body.deadline,
+            "status": 0
         })
     } else {
         result = await Subtasks.create({
@@ -42,7 +43,8 @@ const createNewSubtask = async (req, res) => {
             "note": note,
             "assigned_employees": assigned_employees,
             "createdAt": new Date(),
-            "updatedAt": new Date()
+            "updatedAt": new Date(),
+            "status": 0
         })
     }
     logEvents(`SUBTASK CREATION\t${req.email}\t${result._id}`, 'subTasksLog.txt')
@@ -98,7 +100,7 @@ const getSubtask = async (req, res) => {
     const id = req.body.id ? req.body.id : req.params.id
 
     const subTask = await Subtasks.findById(id)
-    
+
     if (!subTask) {
         return res.status(400).json({ "message": `Subtasks ID with ${req.body.id} not found` });  //bad request
     }
@@ -107,9 +109,9 @@ const getSubtask = async (req, res) => {
 
 const getAllSubtasksOfMaintask = async (req, res) => {
 
-    const id = req.params.id 
+    const id = req.params.id
     const maintaskID = new ObjectId(id)
-    const allSubtasks = await Subtasks.find({ "maintask_id":  maintaskID }).sort({ "_id": 1 })
+    const allSubtasks = await Subtasks.find({ "maintask_id": maintaskID }).sort({ "_id": 1 })
 
     if (!allSubtasks || allSubtasks.length == 0) {
         return res.status(400).json({ "message": `Subtasks with maintasksID=${req.params.id} not found` });  //bad request
@@ -120,51 +122,60 @@ const getAllSubtasksOfMaintask = async (req, res) => {
 const acceptSubtask = async (req, res) => {
     const s_id = req.params.id;
     const subTask = await Subtasks.findById(s_id);
-  
+
     if (!subTask) {
-      return res
-        .status(400)
-        .json({ message: `For Accepting: Subtasks ID with ${s_id} not found` });
+        return res
+            .status(400)
+            .json({ message: `For Accepting: Subtasks ID with ${s_id} not found` });
     }
     for (var [key, value] of subTask.assigned_employees.entries()) {
-      const user = await User.findById(key);
-      if (req.email === user.email) {
-        var userId=user.id;
-        subTask.assigned_employees.set(key, (value ? false:true));
-        subTask.updatedAt = new Date();
-        const result = await subTask.save();
-        logEvents(`SUBTASK ACCEPTED\t${req.email}\t${s_id}`, 'subTasksLog.txt')
-        res.status(200).json(userId); //updated successfully
-      }
+        const user = await User.findById(key);
+        if (req.email === user.email) {
+            var userId = user.id;
+            subTask.assigned_employees.set(key, (value ? false : true));
+            subTask.updatedAt = new Date();
+            const result = await subTask.save();
+            logEvents(`SUBTASK ACCEPTED\t${req.email}\t${s_id}`, 'subTasksLog.txt')
+            res.status(200).json(userId); //updated successfully
+        }
     }
-  
-    
-  };
-  const checkingAcceptance=async(req,res)=>{
-    const s_id=req.params.id;
+
+
+};
+const checkingAcceptance = async (req, res) => {
+    const s_id = req.params.id;
     const subTask = await Subtasks.findById(s_id);
-  
+
     if (!subTask) {
-      return res
-        .status(400)
-        .json({ message: `For Accepting: Subtasks mail with ${email} not found` });
+        return res
+            .status(400)
+            .json({ message: `For Accepting: Subtasks mail with ${email} not found` });
     }
     for (var [key, value] of subTask.assigned_employees.entries()) {
-      const user = await User.findById(key);
-      if (req.email === user.email) {
-        const acceptStatus=value;
-        // if(acceptStatus){
-        //     console.log(acceptStatus);
-        // }
-        
-        res.status(200).json(acceptStatus);
+        const user = await User.findById(key);
+        if (req.email === user.email) {
+            const acceptStatus = value;
+            // if(acceptStatus){
+            //     console.log(acceptStatus);
+            // }
 
-      }
+            res.status(200).json(acceptStatus);
+
+        }
     }
+}
 
+const getCompletedTotal = async (req, res) => {
+    const count = await Subtasks.count({ $or: [{ 'status': 2 }, { 'status': 3 }] });
+    res.status(200).json({ total: count });
+}
 
-  }
-  module.exports = {
+const getPendingTotal = async (req, res) => {
+    const count = await Subtasks.count({ $or: [{ 'status': 0 }, { 'status': 1 }] });
+    res.status(200).json({ total: count });
+}
+
+module.exports = {
     getAllSubtasks,
     createNewSubtask,
     updateSubtask,
@@ -173,5 +184,6 @@ const acceptSubtask = async (req, res) => {
     getAllSubtasksOfMaintask,
     acceptSubtask,
     checkingAcceptance,
-
-  };
+    getCompletedTotal,
+    getPendingTotal
+};

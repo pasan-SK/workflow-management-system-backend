@@ -20,3 +20,8 @@
 20221114	03:52:29	a5e54831-dbc7-4394-a43c-2df23ec302a7	MulterError: Unexpected field
 20221115	13:10:42	3f9d0d14-2fdd-4a71-ba21-3b5d6fbdd028	SyntaxError: Unexpected token P in JSON at position 0
 20221115	13:12:26	af00c987-05f5-4107-9a2f-bbe9bf30f35e	SyntaxError: Unexpected token P in JSON at position 0
+20221116	12:08:51	2a799b87-1717-40c1-940f-310f3b654342	Error: Not allowed by CORS
+20221116	12:09:38	98508fcf-8eaa-46ec-80e4-845b46ef010a	Error: Not allowed by CORS
+20221116	12:14:37	01741913-8419-4d21-a809-ae017f960043	Error: Not allowed by CORS
+20221116	12:15:25	93f8f51c-049d-417e-9f69-2930b7455d1e	Error: Not allowed by CORS
+20221116	12:52:36	290c1d95-9d5e-4833-a63a-3d8e621d78de	Error: Not allowed by CORS
