@@ -10,6 +10,9 @@ router.route('/')
     .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), userController.updateUser)
     .delete(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), userController.deleteUser);
 
+router.route('/total')
+    .get(userController.getTotal);
+
 router.route('/:id')
     .get(userController.getUser);
 
@@ -21,6 +24,5 @@ router.route('/changeStatus/:id')
 
 router.route('/changeRoles/:id')
     .put(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI), userController.changeRoles);
-
 
 module.exports = router;

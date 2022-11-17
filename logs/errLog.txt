@@ -16,3 +16,8 @@
 20221004	07:22:42	3e9f2444-1b08-4f93-810f-7ba6a3adee5d	SyntaxError: Unexpected string in JSON at position 308
 20221004	07:43:15	44a82454-425c-446b-b204-77aaeb8238de	Error: Not allowed by CORS
 20221004	07:43:15	567e40bf-48f3-4d06-88a2-b1e70b7eba9f	Error: Not allowed by CORS
+20221116	12:08:51	2a799b87-1717-40c1-940f-310f3b654342	Error: Not allowed by CORS
+20221116	12:09:38	98508fcf-8eaa-46ec-80e4-845b46ef010a	Error: Not allowed by CORS
+20221116	12:14:37	01741913-8419-4d21-a809-ae017f960043	Error: Not allowed by CORS
+20221116	12:15:25	93f8f51c-049d-417e-9f69-2930b7455d1e	Error: Not allowed by CORS
+20221116	12:52:36	290c1d95-9d5e-4833-a63a-3d8e621d78de	Error: Not allowed by CORS

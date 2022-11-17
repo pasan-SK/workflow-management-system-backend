@@ -94,10 +94,16 @@ const getMainTask = async (req, res) => {
     res.status(200).json(mainTask);
 }
 
+const getTotal = async (req, res) => {
+    const count = await MainTask.count({});
+    res.status(200).json({ total: count });
+}
+
 module.exports = {
     getAllMainTasks,
     createNewMainTask,
     updateMainTask,
     deleteMainTask,
     getMainTask,
+    getTotal
 }
