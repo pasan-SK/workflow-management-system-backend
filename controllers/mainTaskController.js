@@ -14,7 +14,7 @@ const createNewMainTask = async (req, res) => {
     //request body should contain the category_id, description, subtasks_ids of the new maintask
 
     if (!req?.body?.category_id || !req?.body?.description) {
-        console.log("RRRRRRRRRRRRR ", req.body)
+        // console.log("RRRRRRRRRRRRR ", req.body)
         return res.status(400).json({ 'message': 'category_id, description and subtasks_ids of the new mainTask are required.' }); //bad request
     }
 

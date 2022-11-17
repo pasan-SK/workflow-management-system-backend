@@ -3,37 +3,43 @@ const User = require('../../model/User')
 const nodemailer = require('../../config/nodemailer.config');
 
 const userRequest = async (req, res) => {
-    const { email, firstname } = req.body;
 
-    const generatePassword  = ()=>{
-        var password = Date.now()
-        password = "GiD@"+password;
-        return password;
-    }
-
-    const user = await User.findOne({email:email, firstname:firstname}).exec();
-
-    if(user){
-        const name = user.firstname+' '+user?.lastname;
-        const newPassword = generatePassword();
-        user.tempPassword = newPassword;
-
-        const response1 = await user.save();
+    if(!req?.body?.email || !req?.body?.firstname){
+        res.status(400).json({'message':'Email or Firstname not provided'});
+    }else{
         
-        if (response1) {
-            const id = user._id;
+        const { email, firstname } = req.body;
 
-            nodemailer.sendPasswordResetMail(name, email, newPassword, id).then((tempres1)=>{
-                res.status(200).json({'message':'Email sent'})
-            }).catch((err)=>{
-                res.status(503).json({'message':"Email server failed. Try again"});
-            })
-        }else{
-            res.status(500).json({'message':'Server failed. resend the request'})
+        const generatePassword  = ()=>{
+            var password = Date.now()
+            password = "GiD@"+password;
+            return password;
         }
 
-    }else{
-        res.statis(404).json({'message':"Invalid user details"});
+        const user = await User.findOne({email:email, firstname:firstname}).exec();
+
+        if(user){
+            const name = user.firstname+' '+user?.lastname;
+            const newPassword = generatePassword();
+            user.tempPassword = newPassword;
+
+            const response1 = await user.save();
+            
+            if (response1) {
+                const id = user._id;
+
+                nodemailer.sendPasswordResetMail(name, email, newPassword, id).then((tempres1)=>{
+                    res.status(200).json({'message':'Email sent'})
+                }).catch((err)=>{
+                    res.status(503).json({'message':"Email server failed. Try again"});
+                })
+            }else{
+                res.status(500).json({'message':'Server failed. resend the request'})
+            }
+
+        }else{
+            res.status(404).json({'message':"Invalid user details"});
+        }
     }
 }
 
