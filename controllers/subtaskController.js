@@ -91,6 +91,31 @@ const deleteSubtask = async (req, res) => {
     res.status(200).json(result);
 }
 
+const getSubtaskD = async (req, res) => {
+    //request body should contain the id of the subTask that should be fetched
+
+    // const id = req.params.id;
+    // console.log(id);
+
+    const id = req.body.id ? req.body.id : req.params.id
+
+    const subTask = await Subtasks.findById(id);
+    const namesStatusA={};
+    const rolesA=[];
+    for (var [key, value] of subTask.assigned_employees.entries()) {
+        const user = await User.findById(key);
+        const name=user.firstname;
+        const role=user.roles;
+        namesStatusA[name]=value;
+        rolesA.push(role);
+    }
+    
+
+    if (!subTask) {
+        return res.status(400).json({ "message": `Subtasks ID with ${req.body.id} not found` });  //bad request
+    }
+    res.status(200).json({subTask,namesStatusA,rolesA});
+}
 const getSubtask = async (req, res) => {
     //request body should contain the id of the subTask that should be fetched
 
@@ -185,5 +210,6 @@ module.exports = {
     acceptSubtask,
     checkingAcceptance,
     getCompletedTotal,
-    getPendingTotal
+    getPendingTotal,
+    getSubtaskD
 };

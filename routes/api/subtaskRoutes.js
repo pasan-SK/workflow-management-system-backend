@@ -26,5 +26,7 @@ router.route('/acceptance/:id').get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI,
 
 router.route('/of-maintask/:id')
     .get(subtaskController.getAllSubtasksOfMaintask)
+router.route('/getDetailed/:id')
+.get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI,ROLES_LIST.DI,ROLES_LIST.EA), subtaskController.getSubtaskD);
 
 module.exports = router;
