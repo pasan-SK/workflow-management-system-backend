@@ -72,7 +72,7 @@ describe('POST /categories', () => {
             expect(testResponse.statusCode).toBe(401)
             // expect(testResponse.body._id).toBeDefined()
             // newCategoryID = testResponse.body._id
-        })
+        }, 60000)
     })
     describe("When made the request as an authorized employee", () => {
         test("should respond with a 201 status code", async () => {
@@ -86,7 +86,7 @@ describe('POST /categories', () => {
             expect(testResponse.statusCode).toBe(201)
             expect(testResponse.body._id).toBeDefined()
             newCategoryID = testResponse.body._id
-        })
+        }, 60000)
     })
 })
 const DICredentials = {

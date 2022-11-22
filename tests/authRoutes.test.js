@@ -52,7 +52,7 @@ describe("POST /register", () => {
             expect(changeStatusResponse.statusCode).toBe(200);
             expect(changeStatusResponse.headers['content-type']).toEqual(expect.stringContaining("json")); 
 
-        }, 10000)
+        }, 60000)
     })
 
     describe("given an email address", () => {
@@ -67,7 +67,7 @@ describe("POST /register", () => {
 
             const response = await request(app).post("/register").send(credentials)
             expect(response.statusCode).toBe(406);
-        })
+        }, 60000)
     })
 
     describe("when the email and/or password is missing", () => {
@@ -93,7 +93,7 @@ describe("POST /register", () => {
                 const response = await request(app).post("/register").send(body)
                 expect(response.statusCode).toBe(400)
             }
-        })
+        }, 60000)
     })
 })
 
@@ -115,7 +115,7 @@ describe("POST /login", () => {
             expect(response.body.accessToken).toBeDefined()
             cookieName = response.headers['set-cookie'][0].split(',')[0].split(';')[0].split('=')[0]
             cookieValue = response.headers['set-cookie'][0].split(',')[0].split(';')[0].split('=')[1]
-        });
+        }, 60000);
     })
     describe("when the email and/or password is missing", () => {
         test("should respond with a status code of 400 (bad request)", async () => {
@@ -129,7 +129,7 @@ describe("POST /login", () => {
                 const response = await request(app).post("/login").send(body)
                 expect(response.statusCode).toBe(400)
             }
-        })
+        }, 60000)
     })
     describe("when an invalid email and/or password is given", () => {
         test("should respond with a status code of 401 (Unauthorized)", async () => {
@@ -152,7 +152,7 @@ describe("POST /login", () => {
                 const response = await request(app).post("/login").send(body)
                 expect(response.statusCode).toBe(401)
             }
-        })
+        }, 60000)
     })
 });
 
@@ -165,7 +165,7 @@ describe("GET /refresh", () => {
             ])
             expect(response.statusCode).toBe(200)
             expect(response.body.accessToken).toBeDefined()
-        })
+        }, 60000)
     });
     describe("When made the refresh request without the cookie", () => {
         test("should respond with status code 401 (Unauthorized)", async () => {
