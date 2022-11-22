@@ -17,16 +17,16 @@ router.route('/pendingTotal')
     .get(subtaskController.getPendingTotal)
 
 router.route('/:id')
-    .get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI,ROLES_LIST.DI,ROLES_LIST.EA), subtaskController.getSubtask)
+    .get(verifyRoles(ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME), subtaskController.getSubtask)
     .put(
-        verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI,ROLES_LIST.EA),
+        verifyRoles(ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME),
         subtaskController.acceptSubtask
     );
-router.route('/acceptance/:id').get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI,ROLES_LIST.DI,ROLES_LIST.EA), subtaskController.checkingAcceptance)
+router.route('/acceptance/:id').get(verifyRoles(ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME), subtaskController.checkingAcceptance)
 
 router.route('/of-maintask/:id')
     .get(subtaskController.getAllSubtasksOfMaintask)
 router.route('/getDetailed/:id')
-.get(verifyRoles(ROLES_LIST.Admin, ROLES_LIST.DI,ROLES_LIST.DI,ROLES_LIST.EA), subtaskController.getSubtaskD);
+.get(verifyRoles(ROLES_LIST.DI, ROLES_LIST.Admin, ROLES_LIST.CE, ROLES_LIST.DI, ROLES_LIST.DIE, ROLES_LIST.DmanDI, ROLES_LIST.DmanDIE, ROLES_LIST.EA, ROLES_LIST.IE, ROLES_LIST.ME), subtaskController.getSubtaskD);
 
 module.exports = router;
