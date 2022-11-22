@@ -3,7 +3,8 @@ const SingleFile = require('../../model/singlefile');
 const MultipleFile = require('../../model/multiplefile');
 const cloudinary = require("../../helpers/cloudinary");
 const multiplefile = require('../../model/multiplefile');
-
+const mailService=require('../../config/nodemailer.config');
+const emailValidator = require('../../middleware/emailValidator');
 const singleFileUpload = async (req, res, next) => {
     try{
          // Upload file to cloudinary
@@ -26,6 +27,10 @@ const singleFileUpload = async (req, res, next) => {
 }
 const multipleFileUpload = async (req, res, next) => {
     try{
+        const userID=req.body.userID
+        const author=req.body.author
+        const  email=req.body.email
+        const roles=req.body.roles
         
         const filesArray = [];
             for (const element of req.files){
@@ -34,15 +39,18 @@ const multipleFileUpload = async (req, res, next) => {
                 // console.log(result)
                 const file = {
                     fileName: element.originalname,
-                    acceptance:false,
+                    approval:0,
+                    disapprovale:0,
                     // if Accept the task change the value for true
-                    filePath: element.path,
-                    comment:false,
+                    comment:0,
                     //if commented change the value for true
-                    fileType: element.mimetype,
                     fileSize: fileSizeFormatter(element.size, 2),
                     fileURL: result.url,
                     cloudinary_id: result.public_id,
+                    userID:userID,
+                    author:author,
+                    email:email,
+                    roles:roles
                 }
                 filesArray.push(file);
             }
@@ -50,10 +58,6 @@ const multipleFileUpload = async (req, res, next) => {
         const multipleFiles = new MultipleFile({
             title: req.body.title,
             subtask_id:req.body.subtask_id,
-            userID:req.body.userID,
-            author:req.body.author,
-            email:req.body.email,
-            roles:req.body.roles,
             files: filesArray 
         });
         await multipleFiles.save();
@@ -73,8 +77,10 @@ const getallSingleFiles = async (req, res, next) => {
     }
 }
 const getallMultipleFiles = async (req, res, next) => {
+    const subId=req.params.id;
     try{
-        const files = await MultipleFile.find();
+        const files = await MultipleFile.find({"subtask_id":subId});
+        console.log(files);
         res.status(200).send(files);
     }catch(error) {
         res.status(400).send(error.message);
@@ -151,11 +157,24 @@ const comChanger= async(req,res) =>{
     
     
 }
+
+const commentMailer=(req,res)=>{
+    try{
+        const comment=req.body?.commentB;
+        mailService.sendCommentTask("dinukathathsara@gmail.com",comment);
+        res.status(200).json({success:true}); //updated successfully
+    
+    }
+    catch(err){
+        console.log(err);
+    }
+   
+}
 module.exports = {
     singleFileUpload,
     multipleFileUpload,
     getallSingleFiles,
     getallMultipleFiles,
     acceptanceChanger,
-    comChanger
+    comChanger,commentMailer
 }

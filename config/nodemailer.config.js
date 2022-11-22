@@ -47,8 +47,8 @@ const sendPasswordResetMail = async (name, email, newPassword, user_id) => {
         address: user
         },
         to: email,
-        subject: "Account password reset request",
-        html: `<h1>Password Reset Request</h1>
+        subject: "Subtask Review",
+        html: `<h1>${name}</h1>
                 <h2>Hello ${name}</h2>
                 <p>There was a request to reset your password from your account. If you have not requested for password reset then ignore this email, otherwise click the below button. Clicking the below button will reset the password to <b>${newPassword}</b>. It is advised that you change the password after logging in to your account.<br>This link is only valid for 10 minutes</p>
                 <a href=${RESET_API}/${user_id}>Click Here</a>
@@ -62,4 +62,27 @@ const sendPasswordResetMail = async (name, email, newPassword, user_id) => {
     }
 }
 
-module.exports = { sendConfirmationEmail, sendPasswordResetMail }
+const sendCommentTask = async (email, comment) => {
+    
+        const val = await transport.sendMail({
+            from: {name:"Galle Irrigation Dept.",
+            address: user
+            },
+            to: email,
+            subject: "Sub",
+            html: `<h1>Hi</h1>
+                    <h2>Hello ${comment}</h2>
+                    <p>Thanks for completing in</p>
+            `
+        });
+
+        if(val) {
+            return true;
+        }else{
+            return false;
+        }
+
+    
+}
+
+module.exports = { sendConfirmationEmail, sendPasswordResetMail,sendCommentTask }

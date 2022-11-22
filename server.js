@@ -12,6 +12,9 @@ const credentials = require('./middleware/credentials');
 const mongoose = require('mongoose');
 const connectDB = require('./config/dbConn');
 const PORT = process.env.PORT || 3500;
+const bodyParser = require("body-parser")
+
+
 
 //Routes
 const registerRoutes = require('./routes/authRoutes/register')
@@ -48,6 +51,7 @@ app.use(express.json());
 
 //middleware for cookies
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes (No access token check)
 app.use('/register', registerRoutes);
