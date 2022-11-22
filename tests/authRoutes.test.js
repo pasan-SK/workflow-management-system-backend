@@ -20,6 +20,12 @@ const email = `test${randomInt}@gmail.com`
 const pwd = "password1@A"
 let newUserId = ''
 
+const adminCredential = {
+    email: "c@c.com",
+    pwd: "c@c.com"
+}
+let adminAToken = ''
+
 describe("POST /register", () => {
     describe("given a valid email and password", () => {
         test("should respond with a 201 status code and userID should be returned as json", async () => {
@@ -38,7 +44,15 @@ describe("POST /register", () => {
             const response2 = await request(app).get(`/public/email/confirm/${response.body.id}`)
             expect(response2.statusCode).toBe(200);
 
-        })
+            const loginResponse = await request(app).post("/login").send(adminCredential);
+            adminAToken = loginResponse.body.accessToken;
+            expect(loginResponse.headers['content-type']).toEqual(expect.stringContaining("json")); 
+            const changeStatusResponse = await request(app).put(`/users/changeStatus/${response.body.id}`).send({'newUserStatus':1}).set("Authorization", `Bearer ${adminAToken}`);
+
+            expect(changeStatusResponse.statusCode).toBe(200);
+            expect(changeStatusResponse.headers['content-type']).toEqual(expect.stringContaining("json")); 
+
+        }, 10000)
     })
 
     describe("given an email address", () => {
@@ -140,7 +154,8 @@ describe("POST /login", () => {
             }
         })
     })
-})
+});
+
 describe("GET /refresh", () => {
     describe("When made the refresh request with the cookie", () => {
         test("should respond with status code 200 and accessToken should be returned as json", async () => {
@@ -171,8 +186,8 @@ describe("GET /refresh", () => {
 })
 
 const adminCredentials = {
-    email: "d@d.com",
-    pwd: "d@d.com"
+    email: "c@c.com",
+    pwd: "c@c.com"
 }
 let adminAccessToken = ''
 
@@ -183,13 +198,13 @@ describe("GET /logout", () => {
             const response = await request(app).get("/logout")
             expect(response.statusCode).toBe(204)
             
-            const loginResponse = await request(app).post("/login").send(adminCredentials)
-            adminAccessToken = loginResponse.body.accessToken
+            // const loginResponse = await request(app).post("/login").send(adminCredentials)
+            // adminAccessToken = loginResponse.body.accessToken
             
-            const deleteResponse = await request(app).delete("/users").send({"id": newUserId}).set("Authorization", `Bearer ${adminAccessToken}`)
-            expect(deleteResponse.statusCode).toBe(200)
-            expect(deleteResponse.headers['content-type']).toEqual(expect.stringContaining("json"))
-            expect(deleteResponse.body.deletedCount).toEqual(1)            
+            //const deleteResponse = await request(app).delete("/users").send({"id": loginResponse.body.id}).set("Authorization", `Bearer ${adminAccessToken}`)
+            //expect(deleteResponse.statusCode).toBe(200)
+            //expect(deleteResponse.headers['content-type']).toEqual(expect.stringContaining("json"))
+            //expect(deleteResponse.body.deletedCount).toEqual(1)            
         })
     });
 })

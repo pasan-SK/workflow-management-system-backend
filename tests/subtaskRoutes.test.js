@@ -14,8 +14,8 @@ afterAll((done) => {
 });
 
 const adminCredentials = {
-    email: "d@d.com",
-    pwd: "d@d.com"
+    email: "c@c.com",
+    pwd: "c@c.com"
 }
 let adminCookieName = ''
 let adminCookieValue = ''
@@ -44,8 +44,8 @@ describe("GET /subtasks", () => {
 })
 
 const justUserCredentials = {
-    email: "e@e.com",
-    pwd: "e@e.com"
+    email: "d@d.com",
+    pwd: "d@d.com"
 }
 let justUserID = "63327485d1193525822c6612"
 let justUserCookieName = ''

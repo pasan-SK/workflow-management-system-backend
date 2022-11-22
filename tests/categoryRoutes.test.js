@@ -16,8 +16,8 @@ afterAll((done) => {
 });
 
 const adminCredentials = {
-    email: "d@d.com",
-    pwd: "d@d.com"
+    email: "c@c.com",
+    pwd: "c@c.com"
 }
 let adminCookieName = ''
 let adminCookieValue = ''
@@ -30,7 +30,8 @@ describe("GET /categories", () => {
             const response = await request(app).get("/categories")
             expect(response.statusCode).toBe(401)
         })
-    })
+    });
+    
     describe("When logged in to the system but no categories in the database", () => {
         test("should respond with a 204 status code (No content)", async () => {
 
@@ -46,8 +47,8 @@ describe("GET /categories", () => {
 })
 
 const justUserCredentials = {
-    email: "e@e.com",
-    pwd: "e@e.com"
+    email: "d@d.com",
+    pwd: "d@d.com"
 }
 let justUserCookieName = ''
 let justUserCookieValue = ''

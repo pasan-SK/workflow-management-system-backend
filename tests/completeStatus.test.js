@@ -19,8 +19,8 @@ afterEach((done) => {
 });
 
 const adminCredentials = {
-    email: "d@d.com",
-    pwd: "d@d.com"
+    email: "c@c.com",
+    pwd: "c@c.com"
 }
 let adminCookieName = ''
 let adminCookieValue = ''
@@ -49,8 +49,8 @@ describe("GET /categories", () => {
 })
 
 const justUserCredentials = {
-    email: "e@e.com",
-    pwd: "e@e.com"
+    email: "d@d.com",
+    pwd: "d@d.com"
 }
 let justUserCookieName = ''
 let justUserCookieValue = ''
@@ -90,8 +90,8 @@ describe('POST /categories', () => {
     })
 })
 const DICredentials = {
-    email: "dI@d.com",
-    pwd: "d@d.com" 
+    email: "c@c.com",
+    pwd: "c@c.com" 
 }
 let DICookieName = ''
 let DICookieValue = ''
