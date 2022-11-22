@@ -39,7 +39,7 @@ describe("GET /subtasks", () => {
 
             // const testResponse = await agent.get("/subtasks").set("Authorization", `Bearer ${adminAccessToken}`)
             // expect(testResponse.statusCode).toBe(204)
-        })
+        }, 60000)
     })
 })
 
@@ -74,7 +74,7 @@ describe('POST /subtasks', () => {
                 })
                 .set("Authorization", `Bearer ${justUseraccessToken}`)
             expect(testResponse.statusCode).toBe(401)
-        })
+        }, 100000)
     })
     describe("When made the request as an authorized employee", () => {
         test("should respond with a 201 status code", async () => {
@@ -110,7 +110,7 @@ describe('POST /subtasks', () => {
             expect(testResponse.statusCode).toBe(201)
             expect(testResponse.body._id).toBeDefined()
             newSubtaskID = testResponse.body._id
-        })
+        }, 100000)
     })
 })
 
@@ -122,7 +122,7 @@ describe('GET /subtasks/:id', () => {
             expect(testResponse.statusCode).toBe(200)
             expect(testResponse.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(testResponse.body._id).toBeDefined()
-        })
+        }, 60000)
     })
 })    
 
@@ -134,7 +134,7 @@ describe('GET /subtasks/of-maintask/:id', () => {
             expect(testResponse.statusCode).toBe(400)
             expect(testResponse.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(testResponse.body).toBeDefined()
-        })
+        }, 60000)
     })
     describe("When made the request with a correct maintask id that has subtasks assigned to it", () => {
         test("should respond with a 200 status code", async () => {
@@ -143,7 +143,7 @@ describe('GET /subtasks/of-maintask/:id', () => {
             expect(testResponse.statusCode).toBe(200)
             expect(testResponse.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(testResponse.body.length !== 0).toBeTruthy()
-        })
+        }, 60000)
     })
 }) 
 
@@ -161,6 +161,6 @@ describe('DELETE /subtasks', () => {
             expect(testResponse.statusCode).toBe(200)
             expect(testResponse.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(testResponse.body.deletedCount).toEqual(1)
-        })
+        }, 60000)
     })
 })

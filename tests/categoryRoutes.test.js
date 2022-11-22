@@ -29,7 +29,7 @@ describe("GET /categories", () => {
 
             const response = await request(app).get("/categories")
             expect(response.statusCode).toBe(401)
-        })
+        }, 60000)
     });
     
     describe("When logged in to the system but no categories in the database", () => {
@@ -42,7 +42,7 @@ describe("GET /categories", () => {
             
             // const testResponse = await agent.get("/categories").set("Authorization", `Bearer ${adminAccessToken}`)
             // expect(testResponse.statusCode).toBe(204)
-        })
+        }, 60000)
     })
 })
 
@@ -66,7 +66,7 @@ describe('POST /categories', () => {
 
             const testResponse = await request(app).post("/categories").send({"name": "test-category-name"}).set("Authorization", `Bearer ${justUseraccessToken}`)
             expect(testResponse.statusCode).toBe(401)
-        })
+        }, 60000)
     })
     describe("When made the request as an authorized employee", () => {
         test("should respond with a 201 status code", async () => {
@@ -75,7 +75,7 @@ describe('POST /categories', () => {
             expect(testResponse.statusCode).toBe(201)
             expect(testResponse.body._id).toBeDefined()
             newCategoryID = testResponse.body._id
-        })
+        }, 60000)
     })
 })
 describe('DELETE /categories', () => {
@@ -86,6 +86,6 @@ describe('DELETE /categories', () => {
             expect(testResponse.statusCode).toBe(200)
             expect(testResponse.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(testResponse.body.deletedCount).toEqual(1)
-        })
+        }, 60000)
     })
 })

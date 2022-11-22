@@ -27,7 +27,7 @@ describe("GET /mainTasks", () => {
 
             const response = await request(app).get("/mainTasks")
             expect(response.statusCode).toBe(401)
-        })
+        }, 60000)
     })
     describe("When logged in to the system but no mainTasks in the database", () => {
         test("should respond with a 204 status code (No content)", async () => {
@@ -39,7 +39,7 @@ describe("GET /mainTasks", () => {
 
             // const testResponse = await agent.get("/mainTasks").set("Authorization", `Bearer ${adminAccessToken}`)
             // expect(testResponse.statusCode).toBe(204)
-        })
+        }, 60000)
     })
 })
 
@@ -70,7 +70,7 @@ describe('POST /mainTasks', () => {
                 })
                 .set("Authorization", `Bearer ${justUseraccessToken}`)
             expect(testResponse.statusCode).toBe(401)
-        })
+        }, 60000)
     })
     describe("When made the request as an authorized employee", () => {
         test("should respond with a 201 status code", async () => {
@@ -94,7 +94,7 @@ describe('POST /mainTasks', () => {
             expect(testResponse.statusCode).toBe(201)
             expect(testResponse.body._id).toBeDefined()
             newMaintaskID = testResponse.body._id
-        })
+        }, 60000)
     })
 })
 
@@ -106,7 +106,7 @@ describe('GET /mainTasks/:id', () => {
             expect(testResponse.statusCode).toBe(200)
             expect(testResponse.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(testResponse.body._id).toBeDefined()
-        })
+        }, 60000)
     })
 })
 
@@ -121,6 +121,6 @@ describe('DELETE /mainTasks', () => {
             expect(testResponse.statusCode).toBe(200)
             expect(testResponse.headers['content-type']).toEqual(expect.stringContaining("json"))
             expect(testResponse.body.deletedCount).toEqual(1)
-        })
+        }, 60000)
     })
 })
