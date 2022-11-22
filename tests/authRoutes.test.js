@@ -167,6 +167,7 @@ describe("GET /refresh", () => {
             expect(response.body.accessToken).toBeDefined()
         }, 60000)
     });
+    
     describe("When made the refresh request without the cookie", () => {
         test("should respond with status code 401 (Unauthorized)", async () => {
 
